@@ -1,6 +1,6 @@
 # README
 
-## Setting up development environment 🚀
+### 1. Setting up development environment 🚀
 
 1. Clone the repository
 2. Go to cloned repo directory
@@ -20,6 +20,6 @@ NEXT_PUBLIC_APP_ORIGIN=http://localhost:3000
   ```
 5. Run `yarn dev` to start up the dev server on `localhost:3000`
 
-## Deployed domains 👨‍💻
+### 2. Deployed domains 👨‍💻
 
 - **Production** *(branch: main)*: [https://charity-cms.vercel.app/](https://charity-cms.vercel.app/)
