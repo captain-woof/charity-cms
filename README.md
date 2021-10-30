@@ -1,34 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# README
 
-## Getting Started
+## Setting up development environment 🚀
 
-First, run the development server:
+1. Clone the repository
+2. Go to cloned repo directory
+3. Run `yarn` to install all dependencies. *(To install yarn, use `npm i --global yarn`)*
+4. Add the following environment variables in `.env.local` (create this file) **(SENSITIVE - DO NOT LEAK)**:
+  ```
+# Firebase
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyCujjBuVOsVmB4GlJJqJ-ConHWxerRvWKg
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=charity-cms.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=charity-cms
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=charity-cms.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=776039657210
+NEXT_PUBLIC_FIREBASE_APP_ID=1:776039657210:web:de419e6be6268106b7234
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+# Charity CMS
+NEXT_PUBLIC_APP_ORIGIN=http://localhost:3000
+  ```
+5. Run `yarn dev` to start up the dev server on `localhost:3000`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deployed domains 👨‍💻
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Production** *(branch: main)*: [https://charity-cms.vercel.app/](https://charity-cms.vercel.app/)
