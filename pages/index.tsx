@@ -1,12 +1,16 @@
-import { useUser, useSignInWithEmailAndPassword } from '../hooks/auth'
+import 'styled-components'
+import styled, { css } from 'styled-components'
+
+const Heading = styled.h1`
+  ${({theme}) => (css`
+    color: ${theme.colors.primary.normal};
+  `)}
+`
 
 export default function Home() {
-  const user = useUser()
-  const { pending, success, signIn } = useSignInWithEmailAndPassword()
-
   return (
     <div>
-      <h1>React + TS is awesome!</h1>
+      <Heading>React + TS is awesome!</Heading>
     </div>
   )
 }

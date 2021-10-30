@@ -1,6 +1,10 @@
+import StyledThemeProvider from "../providers/theme"
+
 function MyApp({ Component, pageProps }) {
   return (
-    <Component {...pageProps} />
+    <StyledThemeProvider>
+      <Component {...pageProps} />
+    </StyledThemeProvider>
   )
 }
 
