@@ -1,4 +1,4 @@
-import StyledThemeProvider from "../providers/theme"
+import StyledThemeProvider from "../components/providers/theme"
 
 function MyApp({ Component, pageProps }) {
   return (

@@ -1,5 +1,5 @@
 import { DefaultTheme, ThemeProvider } from 'styled-components'
-import { GlobalStyle } from '../styles/base'
+import { GlobalStyle } from '../../styles/base'
 
 // Styled theme
 const theme: DefaultTheme = {
