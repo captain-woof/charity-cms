@@ -3,7 +3,7 @@ import 'styled-components';
 // Necessary interfaces
 interface IColor {
     light: string
-    normal: string
+    main: string
     dark: string
 }
 
@@ -12,8 +12,8 @@ declare module 'styled-components' {
         colors: {
             primary: IColor
             secondary: IColor
-            background: IColor
-            mark: IColor
+            white: IColor
+            black: IColor
         }
         font: {
             family: {
@@ -26,6 +26,21 @@ declare module 'styled-components' {
                 max: number
             }
         }
+        borderRadius: {
+            small: number
+            medium: number
+            large: number
+        }
+        shadow: {
+            small: string
+            medium: string
+            large: string
+        }
+        transition: (arg0: string) => ({
+            slow: string
+            normal: string
+            fast: string
+        })
     }
 }
 
