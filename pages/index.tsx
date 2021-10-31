@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 
 const Heading = styled.h1`
   ${({theme}) => (css`
-    color: ${theme.colors.primary.normal};
+    color: ${theme.colors.primary.main};
   `)}
 `
 

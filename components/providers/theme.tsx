@@ -6,22 +6,22 @@ const theme: DefaultTheme = {
     colors: {
         primary: {
             light: '#5db980',
-            normal: '#34a760',
+            main: '#34a760',
             dark: '#2a864d'
         },
         secondary: {
             light: '#5d83b9',
-            normal: '#3464a7',
+            main: '#3464a7',
             dark: '#2a5086'
         },
-        background: {
+        white: {
             light: '#fdfdfd',
-            normal: '#F4f7f7',
+            main: '#F4f7f7',
             dark: '#dcdede'
         },
-        mark: {
+        black: {
             light: '#2f3030',
-            normal: '#181919',
+            main: '#181919',
             dark: '#0e0f0f'
         }
     },
@@ -35,7 +35,22 @@ const theme: DefaultTheme = {
             min: 1.2,
             max: 1.333
         }
-    }
+    },
+    borderRadius: {
+        small: 4,
+        medium: 6,
+        large: 12
+    },
+    shadow: {
+        small: '0 0 6px #181919',
+        medium: '0 0 12px #181919',
+        large: '0 0 24px #181919'
+    },
+    transition: (effect) => ({
+        slow: `${effect} 1s ease-in-out`,
+        normal: `${effect} 0.5s ease-in-out`,
+        fast: `${effect} 0.35s ease-in-out`
+    })
 }
 
 // Provider
