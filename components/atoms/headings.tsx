@@ -20,9 +20,10 @@ interface IStyledHeading extends InlineStyled, ChildrenProp {
 const StyledHeading = styled.div<IStyledHeading>`
     ${({ theme, hoverEffect }) => (css`
         font-size: var(--fs);
-        color: ${theme.colors.secondary.dark};
+        color: ${theme.colors.primary.dark};
         line-height: var(--lh, 1.5);
         position: relative;
+        font-family: ${theme.font.family.secondary};
 
         ${hoverEffect && css`
             & {
