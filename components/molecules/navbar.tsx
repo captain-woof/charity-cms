@@ -124,13 +124,13 @@ const ProfilePicCircle = styled.div`
         color: ${theme.colors.primary.main};
         font-weight: 600;
         text-transform: uppercase;
-        overflow: hidden;
     `}
 `
 
 const ProfilePic = styled(Image)`
     position: relative;
     z-index: 1;
+    border-radius: 50%;
 `
 
 // Interface for list of links to render
@@ -191,10 +191,10 @@ export default function Navbar() {
                     </HorMenuWrapper>
                     <MenuIcon onClick={() => { setProfileMenuOpen(false); setNavlinksMenuOpen(prev => !prev) }} />
                     {user &&
-                        <ProfilePicCircle onClick={() => { setNavlinksMenuOpen(false); setProfileMenuOpen(prev => !prev) }}>
+                        <ProfilePicCircle data-tooltip="Profile menu" data-tooltip-position='bottom-left' onClick={() => { setNavlinksMenuOpen(false); setProfileMenuOpen(prev => !prev) }}>
                             {user.displayName[0]}
                             {user.photoURL &&
-                                <ProfilePic src={user.photoURL} layout='fill' />
+                                <ProfilePic src={user.photoURL} layout='fill'/>
                             }
                         </ProfilePicCircle>
                     }
