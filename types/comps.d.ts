@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 
 export interface VariadicProps {
-    [key: string]: string | number
+    [key: string]: string | number | ((...args: any) => any)
 }
 
 export interface ChildrenProp {
