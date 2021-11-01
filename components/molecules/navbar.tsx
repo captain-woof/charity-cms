@@ -2,7 +2,7 @@ import styled, { css, useTheme } from 'styled-components'
 import { BiDonateHeart } from 'react-icons/bi'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { Heading5 } from '../atoms/headings'
-import { Link, LinkExternal } from '../atoms/link'
+import { Link } from '../atoms/link'
 import Paper from '../atoms/paper'
 import { useState, useMemo } from 'react'
 import { useUser } from '../../hooks/auth'
@@ -185,7 +185,7 @@ export default function Navbar() {
                     <HorMenuWrapper>
                         {navlinksMenuItemsData.map((menuItemData, index) => (
                             <MenuItem key={index}>
-                                <LinkExternal color={theme.colors.white.light} href={menuItemData.href}>{menuItemData.text}</LinkExternal>
+                                <Link color={theme.colors.white.light} href={menuItemData.href}>{menuItemData.text}</Link>
                             </MenuItem>
                         ))}
                     </HorMenuWrapper>
@@ -206,7 +206,7 @@ export default function Navbar() {
                         <MenuList>
                             {navlinksMenuItemsData.map((menuItemData, index) => (
                                 <MenuItem key={index}>
-                                    <LinkExternal color={theme.colors.black.light} href={menuItemData.href}>{menuItemData.text}</LinkExternal>
+                                    <Link color={theme.colors.black.light} href={menuItemData.href}>{menuItemData.text}</Link>
                                 </MenuItem>
                             ))}
                         </MenuList>
@@ -219,7 +219,7 @@ export default function Navbar() {
                         <MenuList>
                             {profileMenuItemsData.map((menuItemData, index) => (
                                 <MenuItem key={index}>
-                                    <LinkExternal color={theme.colors.black.light} href={menuItemData.href}>{menuItemData.text}</LinkExternal>
+                                    <Link color={theme.colors.black.light} href={menuItemData.href}>{menuItemData.text}</Link>
                                 </MenuItem>
                             ))}
                         </MenuList>
