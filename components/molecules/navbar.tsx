@@ -23,7 +23,6 @@ const StyledNavbar = styled.nav`
         top: 0;
         left: 0;
         z-index: 10;
-        box-shadow: ${theme.shadow.small};
     `}
 `
 
@@ -166,7 +165,7 @@ export default function Navbar() {
         // Additional items ONLY if user is not logged in
         if (!user) {
             commonItemsData = [...commonItemsData,
-            { href: '/auth/sign-in', text: 'Sign-in' },
+            { href: '/auth/login', text: 'Login' },
             ]
         }
         return commonItemsData
