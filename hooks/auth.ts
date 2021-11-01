@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react"
-import { auth } from '../lib/firebase'
+import { auth, googleAuthProvider } from '../lib/firebase'
 import {
+    signInWithRedirect,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
@@ -66,7 +67,7 @@ export const useUser = (): User => {
     return user
 }
 
-// For signing in user
+// For signing in user (with email and password)
 export const useSignInWithEmailAndPassword = () => {
     const { error, pending, setError, setPending, setSuccess, success } = useStatus()
     const signIn = useCallback((email: string, password: string) => {
@@ -76,6 +77,33 @@ export const useSignInWithEmailAndPassword = () => {
             setSuccess(false)
             try {
                 await signInWithEmailAndPassword(auth, email, password)
+                setSuccess("Successfully signed in!")
+            } catch (e) {
+                setError(getMessageFromException(e))
+            } finally {
+                setPending(false)
+            }
+        })()
+    }, [setError, setPending, setSuccess])
+
+    // Return
+    return { success, error, pending, signIn }
+}
+
+// For signing in user (OAuth)
+export const useOAuth = () => {
+    const { error, pending, setError, setPending, setSuccess, success } = useStatus()
+    const signIn = useCallback((providerName: 'google') => {
+        (async () => {
+            setError(false)
+            setPending(true)
+            setSuccess(false)
+            try {
+                switch (providerName) {
+                    case "google":
+                        await signInWithRedirect(auth, googleAuthProvider)
+                        break
+                }
                 setSuccess("Successfully signed in!")
             } catch (e) {
                 setError(getMessageFromException(e))

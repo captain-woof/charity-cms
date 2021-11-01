@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp } from 'firebase/app'
-import { getAuth, Auth } from 'firebase/auth'
+import { getAuth, Auth, GoogleAuthProvider } from 'firebase/auth'
 
 // Firebase app configs
 const firebaseConfig = {
@@ -17,3 +17,14 @@ if (getApps().length === 0) {
 }
 
 export const auth: Auth = getAuth(getApp())
+
+// For Google OAuth
+const googleAuthProvider: GoogleAuthProvider = new GoogleAuthProvider()
+const scopes: string[] = [
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile"
+]
+scopes.forEach((scope) => {
+    googleAuthProvider.addScope(scope)
+});
+export { googleAuthProvider }
