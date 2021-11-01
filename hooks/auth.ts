@@ -12,6 +12,7 @@ import {
     User,
 } from 'firebase/auth'
 import AuthErrorMessages from "../constants/auth"
+import { setCookie, destroyCookie } from 'nookies'
 
 // HELPER - Gets pretty message from exception
 const getMessageFromException = (e: { code: string; message: any }): string => {
@@ -44,7 +45,22 @@ export const useUser = (): User => {
     const [user, setUser] = useState<User | null>(null)
     // On auth state change listener
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => { setUser(user) })
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            // Dispatch current user
+            setUser(user);
+            // Set user id token in his/her cookies (for later auth verification)
+            (async () => {
+                if (user) {
+                    let uIdToken = await user.getIdToken(true)
+                    setCookie(null, 'token', uIdToken, {
+                        path: '/',
+                        sameSite: 'strict'
+                    })
+                } else {
+                    destroyCookie(null, 'token')
+                }
+            })()
+        })
         return unsubscribe
     }, [])
     return user
