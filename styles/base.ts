@@ -75,6 +75,8 @@ export const GlobalStyle = createGlobalStyle`
             border: none;
             outline: none;
         }
+
+        /* COMPONENT STYLES */
         /* Setting font sizes */
         p, form, nav, footer, header, aside, main {
             font-size: var(--fs-400);
@@ -106,6 +108,42 @@ export const GlobalStyle = createGlobalStyle`
         h1 {
             font-size: var(--fs-900);
             line-height: var(--lh-min);
+        }
+
+        /* For tooltip */
+        *[data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            display: none;
+            width: max-content;
+            z-index: 10;
+            font-size: var(--fs-300);
+            color: white;
+            background-color: black;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: capitalize;
+        }
+
+        *[data-tooltip]:hover::after {
+            display: block;
+        }
+
+        *[data-tooltip-position='bottom-left']::after {
+            top: 100%;
+            left: -200%;
+        }
+        *[data-tooltip-position='bottom-right']::after {
+            top: 100%;
+            left: 200%;
+        }
+        *[data-tooltip-position='top-left']::after {
+            top: 0%;
+            left: -200%;
+        }
+        *[data-tooltip-position='top-right']::after {
+            top: 0%;
+            left: 200%;
         }
     `)}
 `
