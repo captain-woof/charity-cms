@@ -5,14 +5,14 @@ import { GlobalStyle } from '../../styles/base'
 const theme: DefaultTheme = {
     colors: {
         primary: {
-            light: '#5db980',
-            main: '#34a760',
-            dark: '#2a864d'
+            light: '#51abcb',
+            main: '#2596be',
+            dark: '#1e7898'
         },
         secondary: {
-            light: '#5d83b9',
-            main: '#3464a7',
-            dark: '#2a5086'
+            light: '#cb7151',
+            main: '#be4d25',
+            dark: '#983e1e'
         },
         white: {
             light: '#fdfdfd',
@@ -42,9 +42,9 @@ const theme: DefaultTheme = {
         large: 12
     },
     shadow: {
-        small: '0 0 6px #181919',
-        medium: '0 0 12px #181919',
-        large: '0 0 24px #181919'
+        small: '0 2px 4px #b8b8b8',
+        medium: '0 0 12px #b8b8b8',
+        large: '0 0 24px #b8b8b8'
     },
     transition: (effect) => ({
         slow: `${effect} 1s ease-in-out`,
