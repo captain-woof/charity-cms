@@ -11,3 +11,7 @@
 ### 2. Deployed domains 👨‍💻
 
 - **Production** *(branch: main)*: [https://charity-cms.vercel.app/](https://charity-cms.vercel.app/)
+
+### 3. Project shared drive 🐅
+
+[Shared drive link](https://drive.google.com/drive/folders/1_h7JrrD1CM8rkW28EalzCTEOSySvWX-x?usp=sharing)
