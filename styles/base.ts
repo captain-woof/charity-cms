@@ -63,7 +63,7 @@ export const GlobalStyle = createGlobalStyle`
             box-sizing: border-box;
         }
         /* Remove margins, paddings and setting default font-weight */
-        body, h1, h2, h3, h4, h5, p, button, textarea, caption, section, form, nav, aside, main {
+        body, h1, h2, h3, h4, h5, p, button, textarea, caption, section, form, nav, aside, main, ul, ol, li {
             margin: 0;
             padding: 0;
             font-weight: 400;
