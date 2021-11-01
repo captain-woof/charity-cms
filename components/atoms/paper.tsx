@@ -34,10 +34,10 @@ const StyledPaper = styled.div<IPaper>`
                 left: 0;
                 height: 100%;
                 width: 100%;
-                background-color: ${theme.colors.secondary.main};
+                background-color: ${theme.colors.black.main};
                 transform: translateY(0.4rem);
-                filter: blur(0.5rem);
-                opacity: 0.5;
+                filter: blur(0.25rem);
+                opacity: 0.25;
         }
         
         ${raiseOnHover && css`
