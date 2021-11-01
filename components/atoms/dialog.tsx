@@ -1,12 +1,12 @@
 import styled, { css } from "styled-components"
 import { IoMdClose } from 'react-icons/io'
 import { useCallback, StateSetter, MouseEvent } from "react"
-import { ChildrenProp, VariadicProps, InlineStyled, ClassNamed } from '../../types/comps'
+import { ChildrenProp, InlineStyled, ClassNamed, VariadicPropsWithoutFunc } from '../../types/comps'
 
 // Interface for Dialog comp
 interface IDialog extends ChildrenProp {
-    backdropStyle?: VariadicProps
-    dialogBoxStyle?: VariadicProps
+    backdropStyle?: VariadicPropsWithoutFunc
+    dialogBoxStyle?: VariadicPropsWithoutFunc
     wide: boolean
     isOpen: boolean
     setIsOpen: StateSetter<boolean>
