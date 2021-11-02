@@ -200,7 +200,7 @@ export default function Navbar() {
                     <MenuIcon onClick={() => { setProfileMenuOpen(false); setNavlinksMenuOpen(prev => !prev) }} />
                     {user &&
                         <ProfilePicCircle data-tooltip="Profile menu" data-tooltip-position='bottom-left' onClick={() => { setNavlinksMenuOpen(false); setProfileMenuOpen(prev => !prev) }}>
-                            {user.displayName[0]}
+                            {user.displayName ? user.displayName[0] : user.email[0]}
                             {user.photoURL &&
                                 <ProfilePic src={user.photoURL} layout='fill' />
                             }
