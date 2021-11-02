@@ -69,7 +69,7 @@ const MenuIcon = styled(GiHamburgerMenu)`
     }
 `
 
-const NavlinksMenuWrapper = styled.div<{ user: User }>`
+const NavlinksMenuWrapper = styled.div<{ user?: User }>`
     ${({ theme, user }) => css`
         @keyframes drop-down {
             0% {
@@ -98,6 +98,12 @@ const NavlinksMenuWrapper = styled.div<{ user: User }>`
 
 const ProfileMenuWrapper = styled(NavlinksMenuWrapper)`
     right: var(--sp-500);
+    display: unset;
+    width: 200px;
+
+    @media (max-width: 480px){
+        width: 50vw;
+    }
 `
 
 const verMenuStyle = {
@@ -207,8 +213,8 @@ export default function Navbar() {
                     <Paper style={verMenuStyle}>
                         <MenuList>
                             {navlinksMenuItemsData.map((menuItemData, index) => (
-                                <MenuItem key={index}>
-                                    <Link color={theme.colors.black.light} href={menuItemData.href}>{menuItemData.text}</Link>
+                                <MenuItem key={index} onClick={() => { setNavlinksMenuOpen(false) }}>
+                                    <Link color={theme.colors.black.light} href={menuItemData.href} >{menuItemData.text}</Link>
                                 </MenuItem>
                             ))}
                         </MenuList>
@@ -220,7 +226,7 @@ export default function Navbar() {
                     <Paper style={verMenuStyle}>
                         <MenuList>
                             {profileMenuItemsData.map((menuItemData, index) => (
-                                <MenuItem key={index}>
+                                <MenuItem key={index} onClick={() => { setProfileMenuOpen(false) }}>
                                     <Link color={theme.colors.black.light} href={menuItemData.href}>{menuItemData.text}</Link>
                                 </MenuItem>
                             ))}
