@@ -8,6 +8,7 @@ import { useState, useMemo } from 'react'
 import { useUser } from '../../hooks/auth'
 import Row from '../atoms/row'
 import Image from 'next/image'
+import { User } from '@firebase/auth'
 
 const StyledNavbar = styled.nav`
     ${({ theme }) => css`
@@ -68,29 +69,31 @@ const MenuIcon = styled(GiHamburgerMenu)`
     }
 `
 
-const NavlinksMenuWrapper = styled.div`
-    @keyframes drop-down {
-        0% {
-            transform: translateY(-2rem);
-            opacity: 0;
+const NavlinksMenuWrapper = styled.div<{ user: User }>`
+    ${({ theme, user }) => css`
+        @keyframes drop-down {
+            0% {
+                transform: translateY(-2rem);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0rem);
+                opacity: 1;
+            }
         }
-        100% {
-            transform: translateY(0rem);
-            opacity: 1;
+
+        top: var(--sp-600);
+        position: fixed;    
+        z-index: 11;
+        right: ${user ? 'var(--sp-800)' : 'var(--sp-500)'};
+        animation: drop-down 0.6s ease-in-out both;
+        user-select: none;
+        width: 50vw;
+
+        @media (min-width: 480px){
+            display: none;
         }
-    }
-
-    top: var(--sp-600);
-    position: fixed;    
-    z-index: 11;
-    right: var(--sp-800);
-    animation: drop-down 0.6s ease-in-out both;
-    user-select: none;
-    width: 50vw;
-
-    @media (min-width: 480px){
-        display: none;
-    }
+    `}
 `
 
 const ProfileMenuWrapper = styled(NavlinksMenuWrapper)`
@@ -193,14 +196,14 @@ export default function Navbar() {
                         <ProfilePicCircle data-tooltip="Profile menu" data-tooltip-position='bottom-left' onClick={() => { setNavlinksMenuOpen(false); setProfileMenuOpen(prev => !prev) }}>
                             {user.displayName[0]}
                             {user.photoURL &&
-                                <ProfilePic src={user.photoURL} layout='fill'/>
+                                <ProfilePic src={user.photoURL} layout='fill' />
                             }
                         </ProfilePicCircle>
                     }
                 </Row>
             </StyledNavbar>
             {navlinksMenuOpen &&
-                <NavlinksMenuWrapper id='navlinks-menu'>
+                <NavlinksMenuWrapper user={user} id='navlinks-menu'>
                     <Paper style={verMenuStyle}>
                         <MenuList>
                             {navlinksMenuItemsData.map((menuItemData, index) => (
