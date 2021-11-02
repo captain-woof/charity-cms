@@ -120,14 +120,16 @@ export const useOAuth = () => {
 // For signing-up user
 export const useSignUpWithEmailAndPassword = () => {
     const { error, pending, setError, setPending, setSuccess, success } = useStatus()
-    const signUp = useCallback((email: string, password: string) => {
+    const [displayName, setDisplayName] = useState<string>('')
+    const user = useUser()
+    const signUp = useCallback((email: string, password: string, displayName: string) => {
         (async () => {
+            setDisplayName(displayName)
             setError(false)
             setPending(true)
             setSuccess(false)
             try {
                 await createUserWithEmailAndPassword(auth, email, password)
-                setSuccess("Successfully signed up!")
             } catch (e) {
                 setError(getMessageFromException(e))
             } finally {
@@ -135,6 +137,16 @@ export const useSignUpWithEmailAndPassword = () => {
             }
         })()
     }, [setError, setPending, setSuccess])
+
+    useEffect(() => {
+        (async () => {
+            if (user) {
+                await updateProfile(user, { displayName })
+                setSuccess("Successfully signed up!")
+            }
+        })()
+    }, [user, displayName, setSuccess])
+
     // Return
     return { success, error, pending, signUp }
 }
