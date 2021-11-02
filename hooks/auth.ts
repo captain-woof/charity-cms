@@ -183,7 +183,7 @@ export const useSendPasswordResetEmail = () => {
             setSuccess(false)
             try {
                 await sendPasswordResetEmail(auth, email, {
-                    url: `${process.env.NEXT_PUBLIC_APP_ORIGIN}/TODO_PATH` as string // TODO: Set proper url here to reset password
+                    url: `${process.env.NEXT_PUBLIC_APP_ORIGIN}/auth/login` as string
                 })
                 setSuccess("Check your email for instructions to reset your password.")
             } catch (e) {
