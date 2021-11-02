@@ -32,6 +32,7 @@ const StyledButton = styled.button<IButton>`
         ${disabled && css`
             background-color: ${variant === 'primary' ? theme.colors.primary.light : theme.colors.secondary.light};
             opacity: 0.8;
+            cursor: not-allowed;
         `}
 
         &:hover {
