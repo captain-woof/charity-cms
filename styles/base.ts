@@ -82,9 +82,6 @@ export const GlobalStyle = createGlobalStyle`
             font-size: var(--fs-400);
             line-height: var(--lh-max);
         }
-        * > * + p {
-            margin-top: var(--sp-400);
-        }
         h5 {
             font-size: var(--fs-500);
             line-height: var(--lh-max);
