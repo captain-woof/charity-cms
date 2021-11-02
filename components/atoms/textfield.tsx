@@ -13,7 +13,7 @@ interface ITextfield extends InlineStyled {
 const TextfieldWrapper = styled.div`
     position: relative;
     height: 2.5rem;
-    border-radius: 4px;
+    border-radius: 6px;
     width: 100%;
 `;
 
@@ -23,14 +23,14 @@ const Input = styled.input`
         height: 100%;
         width: 100%;
         border: none;
-        outline: 2px solid ${theme.colors.secondary.main};
+        outline: 2px solid ${theme.colors.primary.light};
         top: 0;
         left: 0;
         border-radius: inherit;
         padding: 0 1rem;
 
         &:focus {
-          outline: ${color ? `2px solid ${color}` : `2px solid ${theme.colors.primary.main}`};
+          outline: ${color ? `2px solid ${color}` : `2px solid ${theme.colors.primary.dark}`};
         }
     `}
 `;
@@ -44,9 +44,9 @@ const Label = styled.label<ILabel>`
         position: absolute;
         height: fit-content;
         width: fit-content;
-        top: 0.45rem;
+        top: 0.5rem;
         left: 1rem;
-        color: ${theme.colors.secondary.light};
+        color: ${theme.colors.black.light};
         cursor: text;
         transition: ${theme.transition('all').fast};
         background-color: ${bgColor || theme.colors.white.light};
