@@ -8,13 +8,14 @@ interface IButton extends InlineStyled {
     variant?: 'primary' | 'secondary'
     buttonProps?: VariadicProps
     small?: boolean
-    iconEnd?: IconType
-    iconStart?: IconType
+    iconEnd?: ReactNode
+    iconStart?: ReactNode
     children?: ReactNode
+    disabled?: boolean
 }
 
 const StyledButton = styled.button<IButton>`
-    ${({ theme, variant, small }) => (css`
+    ${({ theme, variant, small, disabled }) => (css`
         display: flex;
         align-items: center;
         justify-content: center;
@@ -26,8 +27,12 @@ const StyledButton = styled.button<IButton>`
         color: #fff;
         font-weight: 500;
         cursor: pointer;
-        box-shadow: 0 0 4px ${theme.colors.black.light};
         font-size: ${small ? '0.9rem' : '1rem'};
+
+        ${disabled && css`
+            background-color: ${variant === 'primary' ? theme.colors.primary.light : theme.colors.secondary.light};
+            opacity: 0.8;
+        `}
 
         &:hover {
             background-color: ${variant === 'primary' ? theme.colors.primary.light : theme.colors.secondary.light};
@@ -35,7 +40,6 @@ const StyledButton = styled.button<IButton>`
 
         &:active {
             background-color: ${variant === 'primary' ? theme.colors.primary.dark : theme.colors.secondary.dark};
-            box-shadow: 0 0 8px ${theme.colors.secondary.light};
         }
 
         & svg {
@@ -45,12 +49,20 @@ const StyledButton = styled.button<IButton>`
             color: #fff;
             fill: #fff;
         }
+
+        @media (max-width: 480px){
+            padding: var(--sp-300);
+            & svg {
+                width: ${small ? '0.85rem' : '1rem'};
+                height: ${small ? '0.85rem' : '1rem'};
+            }
+        }
     `)}
 `
 
-export default function Button({ children, variant = 'primary', buttonProps, small = false, iconEnd, iconStart, style }: IButton) {
+export default function Button({ children, variant = 'primary', buttonProps, small = false, iconEnd, iconStart, style, disabled }: IButton) {
     return (
-        <StyledButton {...buttonProps} variant={variant} small={small} style={style}>
+        <StyledButton {...buttonProps} variant={variant} small={small} style={style} disabled={disabled}>
             {iconStart}
             {children}
             {iconEnd}
