@@ -20,7 +20,7 @@ const theme: DefaultTheme = {
             dark: '#dcdede'
         },
         black: {
-            light: '#2f3030',
+            light: '#5e5e5e',
             main: '#181919',
             dark: '#0e0f0f'
         }
