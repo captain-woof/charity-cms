@@ -7,11 +7,11 @@ interface IRow extends ChildrenProp, InlineStyled{
     vCenter?: boolean
 }
 
-const StyledRow = styled.div<IRow>`
-    ${({ wrap, hCenter, vCenter }) => css`
+const StyledRow = styled.div<{$wrap: boolean, hCenter: boolean, vCenter: boolean}>`
+    ${({ $wrap, hCenter, vCenter }) => css`
         display: flex;
         flex-direction: row;
-        flex-wrap: ${wrap ? 'wrap' : 'nowrap'};
+        flex-wrap: ${$wrap ? 'wrap' : 'nowrap'};
         height: max-content;
         justify-content: ${hCenter ? 'center' : 'auto'};
         align-items: ${vCenter ? 'center' : 'auto'};
@@ -20,7 +20,7 @@ const StyledRow = styled.div<IRow>`
 
 export default function Row({ children, wrap = true, style, hCenter = false, vCenter = false }: IRow) {
     return (
-        <StyledRow wrap={wrap} style={style} vCenter={vCenter} hCenter={hCenter}>
+        <StyledRow $wrap={wrap} style={style} vCenter={vCenter} hCenter={hCenter}>
             {children}
         </StyledRow>
     )

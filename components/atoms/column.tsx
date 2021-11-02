@@ -7,11 +7,11 @@ interface IColumn extends ChildrenProp, InlineStyled{
     vCenter?: boolean
 }
 
-const StyledColumn = styled.div<IColumn>`
-    ${({ wrap, hCenter, vCenter }) => css`
+const StyledColumn = styled.div<{$wrap: boolean, hCenter: boolean, vCenter: boolean}>`
+    ${({ $wrap, hCenter, vCenter }) => css`
         display: flex;
         flex-direction: column;
-        flex-wrap: ${wrap ? 'wrap' : 'nowrap'};
+        flex-wrap: ${$wrap ? 'wrap' : 'nowrap'};
         width: max-content;
         justify-content: ${hCenter ? 'center' : 'auto'};
         align-items: ${vCenter ? 'center' : 'auto'};
@@ -20,7 +20,7 @@ const StyledColumn = styled.div<IColumn>`
 
 export default function Column({ children, wrap = true, style, hCenter = false, vCenter = false }: IColumn) {
     return (
-        <StyledColumn wrap={wrap} style={style} vCenter={vCenter} hCenter={hCenter}>
+        <StyledColumn $wrap={wrap} style={style} vCenter={vCenter} hCenter={hCenter}>
             {children}
         </StyledColumn>
     )
