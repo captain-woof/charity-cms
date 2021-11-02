@@ -8,6 +8,7 @@ interface ITextfield extends InlineStyled {
     bgColor?: string
     inputProps?: VariadicProps
     list?: string
+    error?: boolean
 }
 
 const TextfieldWrapper = styled.div`
@@ -17,8 +18,8 @@ const TextfieldWrapper = styled.div`
     width: 100%;
 `;
 
-const Input = styled.input`
-    ${({ theme, color }) => css`
+const Input = styled.input<{ error?: boolean }>`
+    ${({ theme, color, error }) => css`
         position: absolute;
         height: 100%;
         width: 100%;
@@ -32,6 +33,10 @@ const Input = styled.input`
         &:focus {
           outline: ${color ? `2px solid ${color}` : `2px solid ${theme.colors.primary.dark}`};
         }
+
+        ${error && css`
+            outline: 2px solid ${theme.colors.primary.light};
+        `}
     `}
 `;
 
@@ -65,10 +70,10 @@ const Label = styled.label<ILabel>`
     `}
 `;
 
-export default function Textfield({ name, label, list, color, bgColor, inputProps, style }: ITextfield) {
+export default function Textfield({ name, label, list, color, bgColor, inputProps, style, error }: ITextfield) {
     return (
         <TextfieldWrapper style={style}>
-            <Input list={list} id={name} name={name} color={color} autoComplete="off" placeholder=" " {...inputProps}/>
+            <Input error={error} list={list} id={name} name={name} color={color} autoComplete="off" placeholder=" " {...inputProps} />
             <Label htmlFor={name} bgColor={bgColor} color={color}>
                 {label}
             </Label>
