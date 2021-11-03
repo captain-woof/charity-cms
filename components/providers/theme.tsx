@@ -38,7 +38,8 @@ const theme: DefaultTheme = {
     font: {
         family: {
             primary: "'Nunito Sans', sans-serif",
-            secondary: "'Raleway', sans-serif"
+            secondary: "'Raleway', sans-serif",
+            serif: "'Libre Baskerville', serif"
         },
         baseSize: 16,
         lineHeight: {
