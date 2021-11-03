@@ -37,6 +37,12 @@ const StyledHeading = styled.div<IStyledHeading>`
     `)}
 `
 
+const StyledHeadingBig = styled(StyledHeading)`
+    ${({ theme, hoverEffect }) => (css`
+        font-family: ${theme.font.family.serif};
+    `)}
+`
+
 interface ILinkIcon {
     hoverEffect?: boolean
 }
@@ -62,10 +68,21 @@ interface IHeading extends ChildrenProp, InlineStyled{
     isLink?: boolean
 }
 
+export const Heading0 = ({ children, style, hoverEffect=false, isLink=false }: IHeading) => {
+    return (
+        <HeadingWrapper style={{"--fs": "var(--fs-1000)"}}>
+            <StyledHeadingBig hoverEffect={hoverEffect} isLink={isLink} as='h1' style={{ ...style, "--fs": "var(--fs-1000)", '--lh': 1.2 }}>{children}</StyledHeadingBig>
+            {isLink &&
+                <LinkIcon hoverEffect={hoverEffect}/>
+            }
+        </HeadingWrapper>
+    )
+}
+
 export const Heading1 = ({ children, style, hoverEffect=false, isLink=false }: IHeading) => {
     return (
         <HeadingWrapper style={{"--fs": "var(--fs-900)"}}>
-            <StyledHeading hoverEffect={hoverEffect} isLink={isLink} as='h1' style={{ ...style, "--fs": "var(--fs-900)", '--lh': 1.2 }}>{children}</StyledHeading>
+            <StyledHeadingBig hoverEffect={hoverEffect} isLink={isLink} as='h1' style={{ ...style, "--fs": "var(--fs-900)", '--lh': 1.2 }}>{children}</StyledHeadingBig>
             {isLink &&
                 <LinkIcon hoverEffect={hoverEffect}/>
             }
@@ -75,7 +92,7 @@ export const Heading1 = ({ children, style, hoverEffect=false, isLink=false }: I
 export const Heading2 = ({ children, style, hoverEffect, isLink }: IHeading) => {
     return (
         <HeadingWrapper style={{'--fs': "var(--fs-800)"}}>
-            <StyledHeading hoverEffect={hoverEffect} isLink={isLink} as='h2' style={{ ...style, "--fs": "var(--fs-800)", '--lh': 1.2 }}>{children}</StyledHeading>
+            <StyledHeadingBig hoverEffect={hoverEffect} isLink={isLink} as='h2' style={{ ...style, "--fs": "var(--fs-800)", '--lh': 1.2 }}>{children}</StyledHeadingBig>
             {isLink &&
                 <LinkIcon hoverEffect={hoverEffect}/>
             }
