@@ -23,6 +23,16 @@ const theme: DefaultTheme = {
             light: '#5e5e5e',
             main: '#181919',
             dark: '#0e0f0f'
+        },
+        success: {
+            light: '#82ad81',
+            main: '#639961',
+            dark: '#4f7a4e'
+        },
+        error: {
+            light: '#e5545d',
+            main: '#df2935',
+            dark: '#b2212a'
         }
     },
     font: {
