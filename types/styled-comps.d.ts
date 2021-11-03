@@ -14,6 +14,8 @@ declare module 'styled-components' {
             secondary: IColor
             white: IColor
             black: IColor
+            success: IColor
+            error: IColor
         }
         font: {
             family: {
