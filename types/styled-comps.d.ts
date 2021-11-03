@@ -21,6 +21,7 @@ declare module 'styled-components' {
             family: {
                 primary: string
                 secondary: string
+                serif: string
             }
             baseSize: number
             lineHeight: {

@@ -3,7 +3,7 @@ import { createGlobalStyle, css } from "styled-components"
 export const GlobalStyle = createGlobalStyle`
     ${({ theme }) => (css`
         /* FONT FAMILIES */
-        @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
         /* CUSTOM PROPERTIES */
         :root {
@@ -21,6 +21,9 @@ export const GlobalStyle = createGlobalStyle`
             --fs-700-min: calc(var(--fs-600-min) * var(--fs-factor-min));
             --fs-800-min: calc(var(--fs-700-min) * var(--fs-factor-min));
             --fs-900-min: calc(var(--fs-800-min) * var(--fs-factor-min));
+            --fs-1000-min: calc(var(--fs-900-min) * var(--fs-factor-min));
+            --fs-1100-min: calc(var(--fs-1000-min) * var(--fs-factor-min));
+            --fs-1200-min: calc(var(--fs-1100-min) * var(--fs-factor-min));
             --fs-300-min: calc(var(--fs-400-min) / var(--fs-factor-min));
             --fs-200-min: calc(var(--fs-300-min) / var(--fs-factor-min));
             /* Derived font sizes (max)*/
@@ -30,6 +33,9 @@ export const GlobalStyle = createGlobalStyle`
             --fs-700-max: calc(var(--fs-600-max) * var(--fs-factor-max));
             --fs-800-max: calc(var(--fs-700-max) * var(--fs-factor-max));
             --fs-900-max: calc(var(--fs-800-max) * var(--fs-factor-max));
+            --fs-1000-max: calc(var(--fs-900-max) * var(--fs-factor-max));
+            --fs-1100-max: calc(var(--fs-1000-max) * var(--fs-factor-max));
+            --fs-1200-max: calc(var(--fs-1100-max) * var(--fs-factor-max));
             --fs-300-max: calc(var(--fs-400-max) / var(--fs-factor-max));
             --fs-200-max: calc(var(--fs-300-max) / var(--fs-factor-max));
             /* Derived font sizes (fluid) */
@@ -41,6 +47,9 @@ export const GlobalStyle = createGlobalStyle`
             --fs-700: clamp(var(--fs-700-min), var(--fs-700-min) + 2vw, var(--fs-700-max));
             --fs-800: clamp(var(--fs-800-min), var(--fs-800-min) + 3vw, var(--fs-800-max));
             --fs-900: clamp(var(--fs-900-min), var(--fs-900-min) + 4vw, var(--fs-900-max));
+            --fs-1000: clamp(var(--fs-1000-min), var(--fs-1000-min) + 5vw, var(--fs-1000-max));
+            --fs-1100: clamp(var(--fs-1100-min), var(--fs-1100-min) + 6vw, var(--fs-1100-max));
+            --fs-1200: clamp(var(--fs-1200-min), var(--fs-1200-min) + 7vw, var(--fs-1200-max));
             /* Derived spacings */
             --sp-200: calc(var(--sp-factor) * 0.5);
             --sp-300: calc(var(--sp-factor) * 0.75);
@@ -50,6 +59,9 @@ export const GlobalStyle = createGlobalStyle`
             --sp-700: calc(var(--sp-factor)* 4);
             --sp-800: calc(var(--sp-factor)* 5);
             --sp-900: calc(var(--sp-factor)* 6);
+            --sp-1000: calc(var(--sp-factor)* 7);
+            --sp-1100: calc(var(--sp-factor)* 8);
+            --sp-1200: calc(var(--sp-factor)* 9);
         }
         /* RESET */
         /* Set rem */
@@ -57,6 +69,7 @@ export const GlobalStyle = createGlobalStyle`
             font-size: var(--fs-400);
             word-break: break-word;
             font-family: ${theme.font.family.primary};
+            scroll-behavior: smooth;
         }
         /* Border box */
         *, *::before, *::after {
