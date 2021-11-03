@@ -86,7 +86,7 @@ export default function TextfieldFormik({ name, label, list, color, bgColor, inp
     return (
         <TextfieldAndErrorWrapper>
             <TextfieldWrapper style={style}>
-                <Input error={!!metaFormik.error} list={list} id={name} name={name} color={color} autoComplete="off" placeholder=" " {...inputProps} {...inputPropsFormik} />
+                <Input error={(!!metaFormik.error) && metaFormik.touched} list={list} id={name} name={name} color={color} autoComplete="off" placeholder=" " {...inputProps} {...inputPropsFormik} />
                 <Label htmlFor={name} bgColor={bgColor} color={color}>
                     {label}
                 </Label>
