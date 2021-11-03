@@ -121,7 +121,7 @@ export default function Login() {
                             handleSubmit()
                         }}>
                             <TextfieldFormik label='Email' name='email' />
-                            <TextfieldFormik label='Password' name='password' />
+                            <TextfieldFormik label='Password' name='password' inputProps={{ type: 'password' }} />
                             <Button disabled={pending || (!isValid) || (isSubmitting)} buttonProps={{
                                 type: 'submit'
                             }}>Login</Button>
