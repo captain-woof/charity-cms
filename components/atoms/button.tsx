@@ -28,6 +28,7 @@ const StyledButton = styled.button<IButton>`
         font-weight: 500;
         cursor: pointer;
         font-size: ${small ? '0.9rem' : '1rem'};
+        word-break: keep-all;
 
         ${disabled && css`
             background-color: ${variant === 'primary' ? theme.colors.primary.light : theme.colors.secondary.light};
