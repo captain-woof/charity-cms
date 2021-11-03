@@ -35,7 +35,7 @@ const Input = styled.input<{ error?: boolean }>`
         }
 
         ${error && css`
-            outline: 2px solid ${theme.colors.primary.light};
+            outline: 2px solid ${theme.colors.error.light};
         `}
     `}
 `;
