@@ -5,7 +5,7 @@ import { ChildrenProp, InlineStyled } from '../../types/comps'
 interface IContainer extends InlineStyled, ChildrenProp {}
 
 const StyledContainer = styled.div`
-    min-height: 100vh;
+    min-height: calc(100vh - var(--navbar-height));
     max-width: 100%;
     padding: var(--sp-400);
     position: relative;
