@@ -59,6 +59,9 @@ export const GlobalStyle = createGlobalStyle`
             --sp-1000: calc(var(--sp-factor)* 7);
             --sp-1100: calc(var(--sp-factor)* 8);
             --sp-1200: calc(var(--sp-factor)* 9);
+            /* For Navbar */
+            --navbar-height: 4rem;
+            --navbar-z-index: 10;
         }
         /* RESET */
         /* Set rem */

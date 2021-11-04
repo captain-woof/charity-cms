@@ -13,17 +13,17 @@ import { User } from '@firebase/auth'
 const StyledNavbar = styled.nav`
     ${({ theme }) => css`
         display: flex;
-        position: absolute;
+        position: sticky;
         flex-wrap: nowrap;
         justify-content: space-between;
         align-items: center;
         padding: 0 var(--sp-500);
         background-color: ${theme.colors.primary.main};
-        height: 4rem;
+        height: var(--navbar-height);
         width: 100%;
         top: 0;
         left: 0;
-        z-index: 10;
+        z-index: var(--navbar-z-index);
     `}
 `
 
