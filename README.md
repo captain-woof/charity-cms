@@ -13,6 +13,7 @@
 - **Production** *(branch: main)*: [https://charity-cms.vercel.app/](https://charity-cms.vercel.app/)
 - **Dev**:
   - ***Rajarshi:*** *(branch: contentful)*: [https://charity-cms-b9mtl0l5b-captain-woof.vercel.app](https://charity-cms-b9mtl0l5b-captain-woof.vercel.app)
+  - ***Sohail:*** *(branch: dev-sohail)*: [https://charity-cms-niwvchkmt-captain-woof.vercel.app](https://charity-cms-niwvchkmt-captain-woof.vercel.app)
 
 ### 3. Project shared drive 🐅
 
