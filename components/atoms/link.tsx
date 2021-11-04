@@ -48,7 +48,7 @@ interface ILink extends ChildrenProp, InlineStyled {
 
 export const Link = ({ id, href, children, style, color }: ILink) => {
     return (
-        <LinkNext href={href}>
+        <LinkNext href={href} passHref>
             <Anchor id={id} style={style} color={color}>{children}</Anchor>
         </LinkNext>
     )
