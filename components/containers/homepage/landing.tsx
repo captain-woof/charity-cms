@@ -8,8 +8,6 @@ import { Link } from "../../atoms/link"
 // Sidebar
 const Sidebar = styled.main`
     ${({ theme }) => css`
-        background-color: ${theme.colors.black.dark};
-        opacity: 0.8;
         z-index: 2;
         position: absolute;
         top: 0;
@@ -20,6 +18,17 @@ const Sidebar = styled.main`
         display: flex;
         justify-content: center;
         align-items: center;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            opacity: 0.7;
+            background-color: ${theme.colors.black.dark};
+        }
 
         @media (max-width: 480px){
             top: unset;
