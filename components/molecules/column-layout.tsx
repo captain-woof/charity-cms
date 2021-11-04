@@ -13,9 +13,11 @@ const StyledParentContainer = styled.div`
     flex-direction: row;
     flex-wrap: nowrap;
     min-height: inherit;
+    gap: var(--sp-600);
 
     @media (max-width: 480px){
         flex-direction: column;
+        gap: var(--sp-500);
     }
 `
 

@@ -13,10 +13,10 @@ const images = [
 export default function About() {
     return (
         <ParentContainer>
-            <Column widthPercentage={40} widthPercentageMobile={40} fixed style={{ padding: 'var(--sp-400)' }} as='aside'>
+            <Column widthPercentage={40} widthPercentageMobile={40} fixed as='aside'>
                 <ChangingImages altPrefix="About pics" images={images} />
             </Column>
-            <Column widthPercentage={60} widthPercentageMobile={60} style={{ padding: 'var(--sp-400)' }} as='main'>
+            <Column widthPercentage={60} widthPercentageMobile={60} as='main'>
                 <section>
                     <Heading2>What is this site?</Heading2>
                     <Paragraph>Simply put, this site is a one-stop place for charities and NGOs to have their organizations listed, and for you to easily see which causes need your help.</Paragraph>
