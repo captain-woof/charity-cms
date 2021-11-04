@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import { ChildrenProp, InlineStyled } from '../../types/comps'
+import { ChildrenProp, Id, InlineStyled } from '../../types/comps'
 
 // Interface
-interface IContainer extends InlineStyled, ChildrenProp {}
+interface IContainer extends InlineStyled, ChildrenProp, Id {}
 
 const StyledContainer = styled.div`
     min-height: calc(100vh - var(--navbar-height));
@@ -23,17 +23,17 @@ const StyledLobotomizedContainer = styled(StyledContainer)`
     }
 `
 
-export const LobotomizedContainer = ({ children, style }: IContainer) => {
+export const LobotomizedContainer = ({ children, style, id }: IContainer) => {
     return (
-        <StyledLobotomizedContainer style={style} className='container-lobotomized'>
+        <StyledLobotomizedContainer id={id} style={style} className='container-lobotomized'>
             {children}
         </StyledLobotomizedContainer>
     )
 }
 
-export const Container = ({ children, style }: IContainer) => {
+export const Container = ({ children, style, id }: IContainer) => {
     return (
-        <StyledContainer style={style} className='container'>
+        <StyledContainer id={id} style={style} className='container'>
             {children}
         </StyledContainer>
     )
