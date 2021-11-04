@@ -19,3 +19,7 @@ export interface InlineStyled {
 export interface ClassNamed {
     className?: string
 }
+
+export interface Id {
+    id?: string
+}
