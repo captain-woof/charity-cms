@@ -24,6 +24,7 @@ const StyledHeading = styled.div<IStyledHeading>`
         line-height: var(--lh, 1.5);
         position: relative;
         font-family: ${theme.font.family.secondary};
+        width: 100%;
 
         ${hoverEffect && css`
             & {
