@@ -31,9 +31,7 @@ const Sidebar = styled.main`
         }
 
         @media (max-width: 480px){
-            top: unset;
-            bottom: 0;
-            height: 70%;
+            inset: 0;
             width: 100%;
             min-width: unset;
         }
@@ -48,6 +46,7 @@ const SidebarContents = styled.div`
 
     @media (max-width: 480px){
         text-align: center;
+        padding: 0 var(--sp-500);
     }
 `
 
@@ -79,7 +78,7 @@ export default function Landing() {
                     <Heading1 style={{ color: '#fff', fontWeight: 600 }}>Their life is cruel</Heading1>
                     <Heading3 style={{ color: '#fff', fontWeight: 600 }}>But you can help.</Heading3>
                     <ButtonRow>
-                        <Link href="/#know-how">
+                        <Link href="/#what-is-this-site">
                             <Button style={{ backgroundColor: theme.colors.white.light, color: theme.colors.black.dark }}>Learn how</Button>
                         </Link>
                         <Link href="/donate">

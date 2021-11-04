@@ -59,6 +59,9 @@ export const GlobalStyle = createGlobalStyle`
             --sp-1000: calc(var(--sp-factor)* 7);
             --sp-1100: calc(var(--sp-factor)* 8);
             --sp-1200: calc(var(--sp-factor)* 9);
+            /* For Navbar */
+            --navbar-height: 4rem;
+            --navbar-z-index: 10;
         }
         /* RESET */
         /* Set rem */
@@ -91,6 +94,26 @@ export const GlobalStyle = createGlobalStyle`
         }
 
         /* COMPONENT STYLES */
+        /* Scrollbar */
+        body {
+            scrollbar-width: auto;
+            scrollbar-color: #2596be;
+        }
+        ::-webkit-scrollbar{
+            width: 12px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background-color: #1e7898; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #F4f7f7;
+            border-radius: 100rem;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #dcdede;
+        }
+
         /* Setting font sizes */
         p, form, nav, footer, header, aside, main {
             font-size: var(--fs-400);
