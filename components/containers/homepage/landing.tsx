@@ -78,7 +78,7 @@ export default function Landing() {
                     <Heading1 style={{ color: '#fff', fontWeight: 600 }}>Their life is cruel</Heading1>
                     <Heading3 style={{ color: '#fff', fontWeight: 600 }}>But you can help.</Heading3>
                     <ButtonRow>
-                        <Link href="/#know-how">
+                        <Link href="/#what-is-this-site">
                             <Button style={{ backgroundColor: theme.colors.white.light, color: theme.colors.black.dark }}>Learn how</Button>
                         </Link>
                         <Link href="/donate">
