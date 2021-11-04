@@ -1,4 +1,3 @@
-import styled, { css } from "styled-components"
 import { ParentContainer, Column } from '../../molecules/column-layout'
 import ChangingImages from "../../atoms/changing-images"
 import { Heading2 } from "../../atoms/headings"
@@ -12,7 +11,7 @@ const images = [
 
 export default function About() {
     return (
-        <ParentContainer>
+        <ParentContainer id="what-is-this-site">
             <Column widthPercentage={40} widthPercentageMobile={40} fixed as='aside'>
                 <ChangingImages altPrefix="About pics" images={images} />
             </Column>
