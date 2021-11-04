@@ -85,6 +85,10 @@ export const GlobalStyle = createGlobalStyle`
             border: none;
             outline: none;
         }
+        /* Anchor tags reset */
+        a {
+            text-decoration: none;
+        }
 
         /* COMPONENT STYLES */
         /* Setting font sizes */
