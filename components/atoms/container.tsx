@@ -7,12 +7,12 @@ interface IContainer extends InlineStyled, ChildrenProp {}
 const StyledContainer = styled.div`
     min-height: calc(100vh - var(--navbar-height));
     max-width: 100%;
-    padding: var(--sp-500) var(--sp-400);
+    padding: var(--sp-500);
     position: relative;
 
     @media (max-width: 480px) {
         & {
-            padding: var(--sp-600) var(--sp-400);
+            padding: var(--sp-500) var(--sp-400);
         }
     }
 `

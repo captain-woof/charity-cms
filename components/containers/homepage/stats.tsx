@@ -52,7 +52,7 @@ const StatBox = styled.div`
     min-width: 220px;
 
     @media (max-width: 480px){
-        width: 50%;
+        width: 40%;
     }
 `
 

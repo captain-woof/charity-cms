@@ -31,9 +31,7 @@ const Sidebar = styled.main`
         }
 
         @media (max-width: 480px){
-            top: unset;
-            bottom: 0;
-            height: 70%;
+            inset: 0;
             width: 100%;
             min-width: unset;
         }
@@ -48,6 +46,7 @@ const SidebarContents = styled.div`
 
     @media (max-width: 480px){
         text-align: center;
+        padding: 0 var(--sp-500);
     }
 `
 

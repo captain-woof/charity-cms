@@ -1,5 +1,5 @@
 import { Container } from "../../atoms/container";
-import { Heading1 } from "../../atoms/headings";
+import { Heading1, Heading2 } from "../../atoms/headings";
 import Row from "../../atoms/row";
 import styled, { css } from 'styled-components'
 import Image from 'next/image'
@@ -55,10 +55,9 @@ export default function NgosWithUs({ orgsData }: INgosWithUs) {
             display: 'flex',
             flexDirection: 'column',
             gap: 'var(--sp-400) 0',
-            alignItems: 'center',
-            padding: 'var(--sp-500)',
+            alignItems: 'center'
         }}>
-            <Heading1 style={{ textAlign: 'center' }}>Some organisations with us</Heading1>
+            <Heading2 style={{ textAlign: 'center' }}>Some organisations with us</Heading2>
             <Row style={{
                 gap: '4rem',
                 justifyContent: 'center',
