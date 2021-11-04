@@ -19,12 +19,12 @@ interface IStats {
 // For the whole component (to be exported)
 const StatsRow = styled.section`
     position: relative;
-    height: 25vh;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    height: max-content;
 `
 
 export default function Stats({ statsData: { totalCategories, totalDonationsAmount, totalDonationsNum, totalNgos } }: IStats) {
@@ -42,7 +42,7 @@ export default function Stats({ statsData: { totalCategories, totalDonationsAmou
 const StatBox = styled.div`
     position: relative;
     width: 25%;
-    height: 100%;
+    height: 25vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
