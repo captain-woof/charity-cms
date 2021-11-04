@@ -20,7 +20,7 @@ export default function About() {
                 <section>
                     <Heading2>What is this site?</Heading2>
                     <Paragraph>Simply put, this site is a one-stop place for charities and NGOs to have their organizations listed, and for you to easily see which causes need your help.</Paragraph>
-                    <Paragraph>This site categorizes all registered (and verified) non-profit organizations, and provides you a simple catalog to browse through, so that you don't have to go looking for these organizations separately.</Paragraph>
+                    <Paragraph>This site categorizes all registered (and verified) non-profit organizations, and provides you a simple catalog to browse through, so that you don&apos;t have to go looking for these organizations separately.</Paragraph>
                 </section>
                 <section>
                     <Heading2>How can you help?</Heading2>
