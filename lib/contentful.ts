@@ -6,6 +6,7 @@ const client = contentful.createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN_DELIVERY,
 });
 
+//getting the data of all the ngos
 export const ngo = async function getAllNgo() {
   const query = {
     content_type: "ngo",
@@ -48,12 +49,30 @@ export const ngo = async function getAllNgo() {
 };
 
 
-
+//getting the details of the transaction
 export const allTransaction = async()=>{
   const query = {
     content_type : 'transactionDetails',
     include : 10,
-
+    select : "sys.createdAt,sys.id,fields.ngoName,fields.amount"
+  }
+  try{
+    const transactionList = await client.getEntries(query);
+    return{
+      total : transactionList.total,      
+      transactions : transactionList.items.map((transaction,sumOfMoney=0)=>{
+        const { ngoName : Ngo,amount : Amount} = transaction.fields;
+        const {createdAt : Date,id : Transaction_Id} = transaction.sys;
+        return{
+          Transaction_Id,
+          Date,
+          Ngo : Ngo.fields.title,
+          Amount
+        };
+      },0)
+    }
+  }catch(err){
+    return err.message;
   }
 }
 
