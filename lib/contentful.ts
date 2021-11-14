@@ -60,7 +60,7 @@ export const allTransaction = async()=>{
     const transactionList = await client.getEntries(query);
     return{
       total : transactionList.total,      
-      transactions : transactionList.items.map((transaction,sumOfMoney=0)=>{
+      transactions : transactionList.items.map((transaction)=>{
         const { ngoName : Ngo,amount : Amount} = transaction.fields;
         const {createdAt : Date,id : Transaction_Id} = transaction.sys;
         return{
@@ -69,10 +69,31 @@ export const allTransaction = async()=>{
           Ngo : Ngo.fields.title,
           Amount
         };
+      }),
+      
+
+    }
+  }catch(err){
+    return err.message;
+  }
+}
+
+
+
+export const getTotalTransaction = async()=>{
+
+  
+  try{
+    const transactionList = await allTransaction();
+    const transactions = transactionList.transactions;
+    return {
+      totalAmount : transactions.reduce((total,transaction)=>{
+        return total + transaction.Amount;
       },0)
     }
   }catch(err){
     return err.message;
   }
+
 }
 
