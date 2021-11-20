@@ -6,8 +6,27 @@ const client = contentful.createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN_DELIVERY,
 });
 
+interface ITransaction{
+  totalDonationsNum : number,
+  totalDonationsAmount : number
+}
+
+interface Ngo{
+  totalNgoCount : number,
+  ngoList : [],
+}
+
+interface NgoCount{
+  totalNgos : number,
+}
+
+interface TotalCategory{
+  totalCategories : number,
+
+}
+
 //getting the data of all the ngos
-export const ngo = async function getAllNgo() {
+export const ngo = async function getAllNgo()  {
   const query = {
     content_type: "ngo",
     include: 10,
@@ -50,7 +69,7 @@ export const ngo = async function getAllNgo() {
 
 
 //getting the details of the transaction
-export const allTransaction = async()=>{
+export const allTransaction = async() : Promise<ITransaction> =>{
   const query = {
     content_type : 'transactionDetails',
     include : 10,
@@ -72,6 +91,42 @@ export const allTransaction = async()=>{
     return err.message;
   }
 }
+
+
+
+export const ngoCount = async() : Promise<NgoCount> =>{
+  const query = {
+    content_type : 'ngo',
+    include : 10
+  }
+try{
+  const ngoList = await client.getEntries(query);
+  return {
+    totalNgos : ngoList.total
+  }
+}catch(err){
+  return err.mnessage;
+}
+    
+}
+
+export const categoryCount = async() : Promise<TotalCategory> =>{
+  const query = {
+    content_type : 'category',
+    include :10
+  }
+
+  try{
+    const categoryList = await client.getEntries(query);
+    return { 
+      totalCategories : categoryList.total
+    }
+  }catch(err){
+    return err.message;
+  }
+}
+
+
 
 
 
