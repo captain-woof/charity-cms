@@ -1,4 +1,5 @@
 import { getProxiedUrl } from "./image-proxy"
+import { allTransaction,ngoCount,categoryCount } from "../lib/contentful"
 
 // Function to get stats for homepage
 interface IHomepageStats {
@@ -8,14 +9,15 @@ interface IHomepageStats {
     totalDonationsNum: number
 }
 export const getHomepageStats = async (): Promise<IHomepageStats> => {
-    // TODO: Implement logic to get data from Contentful
+    const {totalDonationsNum,totalDonationsAmount} = await allTransaction();
+    const {totalNgos} = await ngoCount();
+    const { totalCategories } = await categoryCount();
 
-    // Dummy Data
     return {
-        totalCategories: 8,
-        totalDonationsAmount: 120000,
-        totalDonationsNum: 1203,
-        totalNgos: 12
+        totalCategories,
+        totalDonationsAmount,
+        totalDonationsNum,
+        totalNgos
     }
 }
 
