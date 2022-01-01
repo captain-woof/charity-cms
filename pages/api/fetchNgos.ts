@@ -3,8 +3,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     /**
-     * /api/fetchNgos?userEmail=......
-     * /api/fetchNgos?category=........
+     * /api/fetchNgos?userEmail=......[valid charity-email]
+     * /api/fetchNgos?category=........[valid category]
      */
 
     try {
