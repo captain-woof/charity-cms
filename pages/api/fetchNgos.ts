@@ -6,12 +6,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
      * /api/fetchNgos?userEmail=......[valid charity-email]
      * /api/fetchNgos?category=........[valid category]
      */
-    console.log(req);
+    
     try {
         const ngoData = await getAllNgo({
             category: req.query.category as string,
             userEmail: req.query.userEmail as string,
-            
+
         });
         res.status(200).json(ngoData);
     } catch (e) {
