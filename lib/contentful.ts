@@ -1,4 +1,5 @@
 const contentful = require("contentful");
+import { Transaction,Image,Ngo,Ngos } from "../types/ngo";
 
 //api for fetching all the ngos
 const client = contentful.createClient({
@@ -6,14 +7,9 @@ const client = contentful.createClient({
     accessToken: process.env.CONTENTFUL_ACCESS_TOKEN_DELIVERY,
 });
 
-interface ITransaction {
+interface TotalTransaction {
     totalDonationsNum: number;
     totalDonationsAmount: number;
-}
-
-interface Ngo {
-    total: number;
-    ngos: [];
 }
 
 interface NgoCount {
@@ -24,14 +20,19 @@ interface TotalCategory {
     totalCategories: number;
 }
 
+interface GetAllNgos {
+    category: string;
+    userEmail: string;
+}
+
 //getting the data of all the ngos
-export const ngo = async function getAllNgo({ category, userEmail }): Promise<Ngo> {
+export const getAllNgo = async ({ category, userEmail }: GetAllNgos): Promise<Ngos> => {
     //query statement
     const query = {
         content_type: "ngo",
         include: 10,
         select: "sys.createdAt,sys.id,fields.title,fields.description,fields.ownerName,fields.charityEmail,fields.transactions,fields.images,fields.category,fields.yearOfEstablish,fields.contact",
-        "fields.isVerified": false,
+        // "fields.isVerified": false,
     };
 
     //if category is passed
@@ -95,7 +96,7 @@ export const ngo = async function getAllNgo({ category, userEmail }): Promise<Ng
 };
 
 //getting the details of the transaction
-export const allTransaction = async (): Promise<ITransaction> => {
+export const allTransaction = async (): Promise<TotalTransaction> => {
     const query = {
         content_type: "transactionDetails",
         include: 10,
