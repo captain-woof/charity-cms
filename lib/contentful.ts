@@ -1,5 +1,5 @@
 const contentful = require("contentful");
-import { Transaction,Image,Ngo,Ngos } from "../types/ngo";
+import { Transaction, Image, Ngo, Ngos } from "../types/ngo";
 
 //api for fetching all the ngos
 const client = contentful.createClient({
@@ -23,10 +23,15 @@ interface TotalCategory {
 interface GetAllNgos {
     category: string;
     userEmail: string;
+    ngoSlug: string;
 }
 
 //getting the data of all the ngos
-export const getAllNgo = async ({ category, userEmail }: GetAllNgos): Promise<Ngos> => {
+export const getAllNgo = async ({
+    category,
+    userEmail,
+    ngoSlug,
+}: GetAllNgos): Promise<Ngos> => {
     //query statement
     const query = {
         content_type: "ngo",
@@ -44,11 +49,16 @@ export const getAllNgo = async ({ category, userEmail }: GetAllNgos): Promise<Ng
     if (userEmail) {
         query["fields.charityEmail"] = userEmail;
     }
+    //if slug is passed
+    if (ngoSlug) {
+        query["fields.ngoSlug"] = ngoSlug;
+    }
 
     /* if userEmail and category nothing is passed it will fetch all the records of the NGOs */
     try {
         const ngoList = await client.getEntries(query);
         // return response.items;
+
         return {
             total: ngoList.total,
             ngos: ngoList.items.map((ngoData) => {
@@ -63,6 +73,20 @@ export const getAllNgo = async ({ category, userEmail }: GetAllNgos): Promise<Ng
                     contact,
                     transactions,
                 } = ngoData.fields;
+
+                //this is added because if a ngo has zero transaction then these are the default values
+                let totalAmount : number = 0;
+                let transactionList : Array<Transaction> = new Array();
+
+                if (transactions) {
+                    totalAmount = transactions.reduce((totalAmount, transaction) => {
+                        return (totalAmount += transaction.fields.amount);
+                    }, 0);
+                    transactionList = transactions.map((transaction) => ({
+                        transactionId: transaction.fields.id,
+                        amount: transaction.fields.amount,
+                    }));
+                }
                 const { id, createdAt: createdOn } = ngoData.sys;
                 return {
                     id,
@@ -80,13 +104,8 @@ export const getAllNgo = async ({ category, userEmail }: GetAllNgos): Promise<Ng
                     category: category.fields.categoryName,
                     yearOfEstablish,
                     contact,
-                    totalAmountRaised: transactions.reduce((totalAmount, transaction) => {
-                        return (totalAmount += transaction.fields.amount);
-                    }, 0),
-                    transactions: transactions.map((transaction) => ({
-                        transactionId: transaction.fields.id,
-                        amount: transaction.fields.amount,
-                    })),
+                    totalAmountRaised: totalAmount,
+                    transactions: transactionList,
                 };
             }),
         };
