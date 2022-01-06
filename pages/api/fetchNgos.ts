@@ -10,9 +10,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
         const ngoData = await getAllNgo({
-            category: req.query.category as string,
-            userEmail: req.query.email as string,
-            ngoSlug: req.query.slug as string,
+            category: req.body.category as string,
+            userEmail: req.body.email as string,
+            ngoSlug: req.body.slug as string,
         });
         res.status(200).json(ngoData);
     } catch (e) {

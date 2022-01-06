@@ -14,6 +14,7 @@ export interface Ngo {
 
 //image interface
 export interface Image {
+    id: string;
     alt: string;
     src: string;
     height: number;
@@ -29,4 +30,12 @@ export interface Transaction {
 export interface Ngos {
     total: number;
     ngos: Array<Ngo>;
+}
+interface CategoryList {
+    total : number
+    categories: Array<Category>;
+}
+interface Category {
+    id: string;
+    categoryName: string;
 }

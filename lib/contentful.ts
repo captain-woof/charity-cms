@@ -1,5 +1,5 @@
 const contentful = require("contentful");
-import { Transaction, Image, Ngo, Ngos } from "../types/ngo";
+import { Transaction, Image, Ngo, Ngos, CategoryList, Category } from "../types/ngo";
 
 //api for fetching all the ngos
 const client = contentful.createClient({
@@ -36,7 +36,7 @@ export const getAllNgo = async ({
     const query = {
         content_type: "ngo",
         include: 10,
-        select: "sys.createdAt,sys.id,fields.title,fields.description,fields.ownerName,fields.charityEmail,fields.transactions,fields.images,fields.category,fields.yearOfEstablish,fields.contact",
+        select: "sys.createdAt,sys.id,fields.title,fields.description,fields.ownerName,fields.charityEmail,fields.transactions,fields.image,fields.category,fields.yearOfEstablish,fields.contact",
         // "fields.isVerified": false,
     };
 
@@ -57,6 +57,7 @@ export const getAllNgo = async ({
     /* if userEmail and category nothing is passed it will fetch all the records of the NGOs */
     try {
         const ngoList = await client.getEntries(query);
+
         // return response.items;
 
         return {
@@ -67,7 +68,7 @@ export const getAllNgo = async ({
                     description,
                     ownerName,
                     charityEmail,
-                    images,
+                    image,
                     category,
                     yearOfEstablish,
                     contact,
@@ -75,8 +76,8 @@ export const getAllNgo = async ({
                 } = ngoData.fields;
 
                 //this is added because if a ngo has zero transaction then these are the default values
-                let totalAmount : number = 0;
-                let transactionList : Array<Transaction> = new Array();
+                let totalAmount: number = 0;
+                let transactionList: Array<Transaction> = new Array();
 
                 if (transactions) {
                     totalAmount = transactions.reduce((totalAmount, transaction) => {
@@ -95,12 +96,13 @@ export const getAllNgo = async ({
                     charityEmail,
                     description,
                     createdOn,
-                    images: images.map((image) => ({
+                    image: {
+                        id: image.sys.id,
                         alt: image.fields.title,
                         src: `https:${image.fields.file.url}`,
                         height: image.fields.file.details.image.height,
                         width: image.fields.file.details.image.width,
-                    })),
+                    },
                     category: category.fields.categoryName,
                     yearOfEstablish,
                     contact,
@@ -148,7 +150,7 @@ export const ngoCount = async (): Promise<NgoCount> => {
             totalNgos: ngoList.total,
         };
     } catch (err) {
-        return err.mnessage;
+        return err.message;
     }
 };
 
@@ -164,6 +166,35 @@ export const categoryCount = async (): Promise<TotalCategory> => {
         const categoryList = await client.getEntries(query);
         return {
             totalCategories: categoryList.total,
+        };
+    } catch (err) {
+        return err.message;
+    }
+};
+
+//fetch all the categories
+export const getCategories = async (categoryName?: string): Promise<CategoryList> => {
+    const query = {
+        content_type: "category",
+    };
+
+    if (categoryName) {
+        query["fields.categoryName[match]"] = categoryName;
+    }
+    try {
+        const categoryList = await client.getEntries(query);
+
+        return {
+            total: categoryList.total,
+            categories: categoryList.items.map((category) => {
+                const { categoryName } = category.fields;
+                const { id } = category.sys;
+
+                return {
+                    id,
+                    categoryName,
+                };
+            }),
         };
     } catch (err) {
         return err.message;
