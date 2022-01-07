@@ -14,6 +14,13 @@ interface Data {
     fields: formidable.Fields;
     files: formidable.Files;
 }
+
+
+
+const capitalize = (text : string) : string => {
+    return text.replace(/\b\w/g,l=>l.toUpperCase());
+    
+}
 export default async function Handler(req: NextApiRequest, res: NextApiResponse) {
     try {
         if (req.method === "POST") {
@@ -44,7 +51,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
                 contentOfPdf
             );
 
-            const category = data.fields.category as string;
+            const category = capitalize(data.fields.category as string);
             const response = await getCategories(category);
             let categoryId: string;
             if (response.total === 0) {

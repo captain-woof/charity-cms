@@ -37,7 +37,7 @@ export const createAsset = async (
             file: file,
         });
 
-        console.log(upload);
+        // console.log(upload);
 
         let asset = await env.createAsset({
             fields: {
