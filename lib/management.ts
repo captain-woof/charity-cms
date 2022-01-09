@@ -31,8 +31,8 @@ export const createAsset = async (
         let type: string = json.type;
         let name: string = json.name;
 
-        const space = await client.getSpace(process.env.CONTENTFUL_SPACE_ID);
-        const env = await space.getEnvironment(process.env.CONTENTFUL_ENV_ID);
+        const space = await client.getSpace(process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID);
+        const env = await space.getEnvironment(process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID);
         const upload = await env.createUpload({
             file: file,
         });
@@ -68,8 +68,8 @@ export const createAsset = async (
     }
 };
 export const createCategory = async (categoryName: string): Promise<string> => {
-    const space = await client.getSpace(process.env.CONTENTFUL_SPACE_ID);
-    const env = await space.getEnvironment(process.env.CONTENTFUL_ENV_ID);
+    const space = await client.getSpace(process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID);
+    const env = await space.getEnvironment(process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID);
     let entry = await env.createEntry("category", {
         fields: {
             categoryName: {
@@ -93,8 +93,8 @@ export const createNgo = async ({
     imageId,
 }: NgoQuery): Promise<Entry> => {
     try {
-        const space = await client.getSpace(process.env.CONTENTFUL_SPACE_ID);
-        const env = await space.getEnvironment(process.env.CONTENTFUL_ENV_ID);
+        const space = await client.getSpace(process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID);
+        const env = await space.getEnvironment(process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID);
         let entry = await env.createEntry("ngo", {
             fields: {
                 title: {

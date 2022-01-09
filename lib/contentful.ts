@@ -3,8 +3,8 @@ import { Transaction, Image, Ngo, Ngos, CategoryList, Category } from "../types/
 
 //api for fetching all the ngos
 const client = contentful.createClient({
-    space: process.env.CONTENTFUL_SPACE_ID,
-    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN_DELIVERY,
+    space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
+    accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN_DELIVERY,
 });
 
 interface TotalTransaction {
