@@ -38,7 +38,7 @@ export const getAllNgo = async ({
     const query = {
         content_type: "ngo",
         include: 10,
-        select: "sys.createdAt,sys.id,fields.title,fields.description,fields.ownerName,fields.charityEmail,fields.transactions,fields.image,fields.category,fields.yearOfEstablish,fields.contact",
+        select: "sys.createdAt,sys.id,fields.title,fields.ngoSlug,fields.description,fields.ownerName,fields.charityEmail,fields.transactions,fields.image,fields.category,fields.yearOfEstablish,fields.contact",
         // "fields.isVerified": false,
     };
 
@@ -74,6 +74,7 @@ export const getAllNgo = async ({
                 const {
                     title,
                     description,
+                    ngoSlug,
                     ownerName,
                     charityEmail,
                     image,
@@ -100,6 +101,7 @@ export const getAllNgo = async ({
                 return {
                     id,
                     title,
+                    ngoSlug,
                     ownerName,
                     charityEmail,
                     description,
