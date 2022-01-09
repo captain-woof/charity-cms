@@ -1,5 +1,5 @@
 const contentful = require("contentful");
-import { Transaction, Image, Ngo, Ngos, CategoryList, Category } from "../types/ngo";
+import { Transaction, Ngos, CategoryList } from "../types/ngo";
 
 //api for fetching all the ngos
 const client = contentful.createClient({
