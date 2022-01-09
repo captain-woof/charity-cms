@@ -6,13 +6,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
      * /api/fetchNgos?userEmail=......[valid charity-email]
      * /api/fetchNgos?category=........[valid category]
      * /api/fetchNgos?slug=.....[Lions club = lions-club]
+     * /api/fetchNgos?verified=true or false
      */
 
     try {
         const ngoData = await getAllNgo({
-            category: req.body.category as string,
-            userEmail: req.body.email as string,
-            ngoSlug: req.body.slug as string,
+            category: req.query.category as string,
+            userEmail: req.query.email as string,
+            ngoSlug: req.query.slug as string,
+            isVerified: req.query.verified as string,
         });
         res.status(200).json(ngoData);
     } catch (e) {

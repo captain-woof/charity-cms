@@ -21,9 +21,10 @@ interface TotalCategory {
 }
 
 interface GetAllNgos {
-    category: string;
-    userEmail: string;
-    ngoSlug: string;
+    category?: string;
+    userEmail?: string;
+    ngoSlug?: string;
+    isVerified?: string;
 }
 
 //getting the data of all the ngos
@@ -31,6 +32,7 @@ export const getAllNgo = async ({
     category,
     userEmail,
     ngoSlug,
+    isVerified,
 }: GetAllNgos): Promise<Ngos> => {
     //query statement
     const query = {
@@ -45,6 +47,12 @@ export const getAllNgo = async ({
         query["fields.category.sys.contentType.sys.id"] = "category";
         query["fields.category.fields.categoryName[match]"] = category;
     }
+
+    //filter the ngolist as per verified
+    if (isVerified) {
+        query["fields.isVerified"] = isVerified === "true";
+    }
+
     //if useremail has passed
     if (userEmail) {
         query["fields.charityEmail"] = userEmail;

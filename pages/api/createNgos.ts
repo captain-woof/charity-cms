@@ -15,12 +15,9 @@ interface Data {
     files: formidable.Files;
 }
 
-
-
-const capitalize = (text : string) : string => {
-    return text.replace(/\b\w/g,l=>l.toUpperCase());
-    
-}
+const capitalize = (text: string): string => {
+    return text.replace(/\b\w/g, (l) => l.toUpperCase());
+};
 export default async function Handler(req: NextApiRequest, res: NextApiResponse) {
     try {
         if (req.method === "POST") {
@@ -68,8 +65,8 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
                 contact: data.fields.contact as string,
                 ownerName: data.fields.ownerName as string,
                 categoryId: categoryId,
-                verificationId: pdfId as string,
-                imageId: imageId as string,
+                verificationId: pdfId,
+                imageId: imageId,
             };
 
             const ngoCreated = await createNgo(newNgo);
