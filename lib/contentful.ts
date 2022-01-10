@@ -19,12 +19,11 @@ interface NgoCount {
 interface TotalCategory {
     totalCategories: number;
 }
-
 interface GetAllNgos {
     category?: string;
     userEmail?: string;
     ngoSlug?: string;
-    isVerified?: string;
+    isVerified?: "true" | "false";
 }
 
 //getting the data of all the ngos
@@ -49,11 +48,13 @@ export const getAllNgo = async ({
     }
 
     //filter the ngolist as per verified
-    if (isVerified) {
-        query["fields.isVerified"] = isVerified === "true";
+    if (isVerified === "true") {
+        query["fields.isVerified"] = true;
+    } else if (isVerified === "false") {
+        query["fields.isVerified"] = false;
     }
 
-    //if useremail has passed
+    //if user-email has passed
     if (userEmail) {
         query["fields.charityEmail"] = userEmail;
     }
