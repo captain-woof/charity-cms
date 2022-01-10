@@ -1,7 +1,11 @@
 import styled, { css } from "styled-components"
 import { IconType } from 'react-icons'
-import { ReactNode } from 'react'
+import { BiDonateHeart } from 'react-icons/bi'
+import { ReactNode, useCallback, useState } from 'react'
 import { VariadicProps, InlineStyled } from "../../types/comps"
+import { Ngo } from "../../types/ngo"
+import { makeDonation } from "../../lib/razorpay"
+import Textfield from "./textfield"
 
 // Interface for button
 interface IButton extends InlineStyled {
@@ -69,5 +73,39 @@ export default function Button({ children, variant = 'primary', buttonProps, sma
             {children}
             {iconEnd}
         </StyledButton>
+    )
+}
+
+// Donate button
+interface DonateButton extends IButton {
+    ngo: Ngo
+}
+
+export function DonateButton({ children, variant = 'primary', buttonProps, small = false, style, disabled, ngo }: DonateButton) {
+    const [showInput, setShowInput] = useState<boolean>(false)
+    const [amount, setAmount] = useState<string>("")
+
+    const toggleShowInput = useCallback(() => {
+        setShowInput((prev) => !prev)
+    }, [setShowInput])
+
+    return (
+        <>
+            {showInput ?
+                <form onSubmit={() => { makeDonation(ngo, amount); toggleShowInput() }}
+                    style={{ width: "100%", maxWidth: "240px" }}>
+                    <Textfield name="amount" label="Amount" inputProps={{
+                        type: "number",
+                        value: amount,
+                        onChange: (e) => { setAmount(e.target.value) },
+                        step: 50
+                    }} />
+                </form> :
+                <StyledButton {...buttonProps} variant={variant} small={small} style={style} disabled={disabled} onClick={toggleShowInput}>
+                    {children}
+                    <BiDonateHeart />
+                </StyledButton>
+            }
+        </>
     )
 }

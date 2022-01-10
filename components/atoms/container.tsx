@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { ChildrenProp, Id, InlineStyled } from '../../types/comps'
 
 // Interface
-interface IContainer extends InlineStyled, ChildrenProp, Id {}
+interface IContainer extends InlineStyled, ChildrenProp, Id { }
 
 const StyledContainer = styled.div`
     min-height: calc(100vh - var(--navbar-height));
@@ -23,6 +23,18 @@ const StyledLobotomizedContainer = styled(StyledContainer)`
     }
 `
 
+const StyledMaxWidthContainer = styled(StyledContainer)`
+    width: 80%;
+    max-width: 768px;
+    margin: 0 auto;
+
+    @media (max-width: 480px) {
+        & {
+            width: 100%;
+        }
+    }
+`
+
 export const LobotomizedContainer = ({ children, style, id }: IContainer) => {
     return (
         <StyledLobotomizedContainer id={id} style={style} className='container-lobotomized'>
@@ -36,5 +48,13 @@ export const Container = ({ children, style, id }: IContainer) => {
         <StyledContainer id={id} style={style} className='container'>
             {children}
         </StyledContainer>
+    )
+}
+
+export const MaxWidthContainer = ({ children, style, id }: IContainer) => {
+    return (
+        <StyledMaxWidthContainer id={id} style={style} className='container-maxwidth'>
+            {children}
+        </StyledMaxWidthContainer>
     )
 }

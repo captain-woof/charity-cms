@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, CSSProperties } from 'react'
 
 export interface VariadicProps {
     [key: string]: string | number | ((...args: any) => any)
@@ -13,7 +13,7 @@ export interface ChildrenProp {
 }
 
 export interface InlineStyled {
-    style?: { [key: string]: string | number }
+    style?: CSSProperties & { [key: string]: string | number }
 }
 
 export interface ClassNamed {

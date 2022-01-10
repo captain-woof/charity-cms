@@ -38,7 +38,7 @@ export const getAllNgo = async ({
     const query = {
         content_type: "ngo",
         include: 10,
-        select: "sys.createdAt,sys.id,fields.title,fields.description,fields.ownerName,fields.charityEmail,fields.transactions,fields.image,fields.category,fields.yearOfEstablish,fields.contact",
+        select: "sys.createdAt,sys.id,fields.title,fields.description,fields.ownerName,fields.charityEmail,fields.transactions,fields.image,fields.category,fields.yearOfEstablish,fields.contact,fields.ngoSlug",
         // "fields.isVerified": false,
     };
 
@@ -81,6 +81,7 @@ export const getAllNgo = async ({
                     yearOfEstablish,
                     contact,
                     transactions,
+                    ngoSlug
                 } = ngoData.fields;
 
                 //this is added because if a ngo has zero transaction then these are the default values
@@ -100,6 +101,7 @@ export const getAllNgo = async ({
                 return {
                     id,
                     title,
+                    ngoSlug,
                     ownerName,
                     charityEmail,
                     description,

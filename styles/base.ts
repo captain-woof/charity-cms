@@ -91,6 +91,8 @@ export const GlobalStyle = createGlobalStyle`
         /* Anchor tags reset */
         a {
             text-decoration: none;
+            color: ${theme.colors.primary.main};
+            font-weight: 600;
         }
 
         /* COMPONENT STYLES */

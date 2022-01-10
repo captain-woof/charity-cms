@@ -4,12 +4,13 @@ export interface Ngo {
     description: string;
     ownerName: string;
     charityEmail: string;
-    images: Array<Image>;
+    image: Image;
     category: string;
     yearOfEstablish: Date;
     contact: string;
     totalAmountRaised: number;
     transactions: Array<Transaction>;
+    ngoSlug: string;
 }
 
 //image interface
