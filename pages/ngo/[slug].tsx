@@ -35,7 +35,8 @@ export const getStaticProps = async (ctx: GetStaticPropsContext) => {
 export default function NgoPage({ ngo }: { ngo: Ngo }) {
     return (
         <>
-            <Details ngo={ngo} />
+            {!!ngo && <Details ngo={ngo} />}
+            
         </>
     )
 }
