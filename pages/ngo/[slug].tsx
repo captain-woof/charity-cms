@@ -2,6 +2,8 @@ import { GetStaticPathsContext, GetStaticPaths, GetStaticPropsContext } from "ne
 import Details from "../../components/containers/ngo/details"
 import { getAllNgo } from "../../lib/contentful"
 import { Ngo } from "../../types/ngo"
+import { useRouter } from 'next/router'
+import Loader from "../../components/atoms/loader"
 
 export const getStaticPaths: GetStaticPaths = async (ctx: GetStaticPathsContext) => {
     const verfiedNgos = await getAllNgo({ isVerified: "true" })
@@ -33,10 +35,17 @@ export const getStaticProps = async (ctx: GetStaticPropsContext) => {
 }
 
 export default function NgoPage({ ngo }: { ngo: Ngo }) {
+    const router = useRouter()
+
+    if(router.isFallback){
+        return (
+            <Loader />
+        )
+    }
+
     return (
         <>
             {!!ngo && <Details ngo={ngo} />}
-            
         </>
     )
 }
