@@ -1,21 +1,22 @@
 import Loader from "../components/atoms/loader"
-
-export async function getStaticProps() {
-    if (process.env.NODE_ENV === "production") {
-        return {
-            redirect: {
-                destination: '/',
-                permanent: true,
-            }
-        }
-    } else {
-        return {
-            props: {}
-        }
-    }
-}
+import { useRouter} from 'next/router'
+import { useEffect } from "react"
 
 export default function TestPage() {
+    const router = useRouter()
+
+    useEffect(() => {
+        if (process.env.NODE_ENV === "production") {
+            router.replace("/")
+        }
+    }, [router])
+
+    if (process.env.NODE_ENV === "production") {
+        return (
+            <></>
+        )
+    }
+
     return (
         <Loader />
     )
