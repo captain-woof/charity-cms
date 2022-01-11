@@ -1,7 +1,7 @@
 import { ReactNode, CSSProperties } from 'react'
 
 export interface VariadicProps {
-    [key: string]: string | number | ((...args: any) => any)
+    [key: string]: string | number | ((...args: any) => any) | boolean
 }
 
 export interface VariadicPropsWithoutFunc {

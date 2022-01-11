@@ -98,10 +98,11 @@ export function DonateButton({ children, variant = 'primary', buttonProps, small
                         type: "number",
                         value: amount,
                         onChange: (e) => { setAmount(e.target.value) },
-                        step: 50
-                    }} />
+                        step: 50,
+                        onClick: (e) => { e.preventDefault(); }
+                    }}/>
                 </form> :
-                <StyledButton {...buttonProps} variant={variant} small={small} style={style} disabled={disabled} onClick={toggleShowInput}>
+                <StyledButton {...buttonProps} variant={variant} small={small} style={style} disabled={disabled} onClick={(e) => { e.preventDefault(); toggleShowInput(); }}>
                     {children}
                     <BiDonateHeart />
                 </StyledButton>

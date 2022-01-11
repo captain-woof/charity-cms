@@ -25,6 +25,7 @@ interface GetAllNgos {
     userEmail?: string;
     ngoSlug?: string;
     isVerified?: string;
+    titleSearch?: string;
 }
 
 //getting the data of all the ngos
@@ -33,6 +34,7 @@ export const getAllNgo = async ({
     userEmail,
     ngoSlug,
     isVerified,
+    titleSearch
 }: GetAllNgos): Promise<Ngos> => {
     //query statement
     const query = {
@@ -41,6 +43,11 @@ export const getAllNgo = async ({
         select: "sys.createdAt,sys.id,fields.title,fields.description,fields.ownerName,fields.charityEmail,fields.transactions,fields.image,fields.category,fields.yearOfEstablish,fields.contact,fields.ngoSlug",
         // "fields.isVerified": false,
     };
+
+    // If title search is passed
+    if (!!titleSearch){
+        query["fields.title[match]"] = titleSearch;
+    }
 
     //if category is passed
     if (category) {
