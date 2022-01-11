@@ -55,4 +55,10 @@ const NgosContainer = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     gap: var(--sp-300);
+    
+    @media (max-width: 480px){
+        justify-content: center;
+        margin-top: var(--sp-200);
+        margin-bottom: var(--sp-400);
+    }
 `

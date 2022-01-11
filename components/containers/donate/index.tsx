@@ -48,7 +48,8 @@ export default function Donate({ categoriesAndNgos }: Donate) {
                     <Textfield label="Search" name="search" inputProps={{
                         value: searchTerm,
                         onChange: (e) => { setSearchTerm(e.target.value) },
-                        disabled: searching
+                        disabled: searching,
+                        type: "search"
                     }} />
                 </form>
                 {!!searchedNgos
