@@ -1,5 +1,5 @@
 const contentful = require("contentful");
-import { Transaction, Image, Ngo, Ngos, CategoryList, Category } from "../types/ngo";
+import { TransactionList, Ngos, CategoryList } from "../types/ngo";
 
 //api for fetching all the ngos
 const client = contentful.createClient({
@@ -19,13 +19,12 @@ interface NgoCount {
 interface TotalCategory {
     totalCategories: number;
 }
-
 interface GetAllNgos {
     category?: string;
     userEmail?: string;
     ngoSlug?: string;
-    isVerified?: string;
     titleSearch?: string;
+    isVerified?: "true" | "false";
 }
 
 //getting the data of all the ngos
@@ -40,7 +39,7 @@ export const getAllNgo = async ({
     const query = {
         content_type: "ngo",
         include: 10,
-        select: "sys.createdAt,sys.id,fields.title,fields.description,fields.ownerName,fields.charityEmail,fields.transactions,fields.image,fields.category,fields.yearOfEstablish,fields.contact,fields.ngoSlug",
+        select: "sys.createdAt,sys.id,fields.title,fields.ngoSlug,fields.description,fields.ownerName,fields.charityEmail,fields.image,fields.category,fields.yearOfEstablish,fields.contact",
         // "fields.isVerified": false,
     };
 
@@ -56,11 +55,13 @@ export const getAllNgo = async ({
     }
 
     //filter the ngolist as per verified
-    if (isVerified) {
-        query["fields.isVerified"] = isVerified === "true";
+    if (isVerified === "true") {
+        query["fields.isVerified"] = true;
+    } else if (isVerified === "false") {
+        query["fields.isVerified"] = false;
     }
 
-    //if useremail has passed
+    //if user-email has passed
     if (userEmail) {
         query["fields.charityEmail"] = userEmail;
     }
@@ -81,29 +82,15 @@ export const getAllNgo = async ({
                 const {
                     title,
                     description,
+                    ngoSlug,
                     ownerName,
                     charityEmail,
                     image,
                     category,
                     yearOfEstablish,
                     contact,
-                    transactions,
-                    ngoSlug
                 } = ngoData.fields;
 
-                //this is added because if a ngo has zero transaction then these are the default values
-                let totalAmount: number = 0;
-                let transactionList: Array<Transaction> = new Array();
-
-                if (transactions) {
-                    totalAmount = transactions.reduce((totalAmount, transaction) => {
-                        return (totalAmount += transaction.fields.amount);
-                    }, 0);
-                    transactionList = transactions.map((transaction) => ({
-                        transactionId: transaction.fields.id,
-                        amount: transaction.fields.amount,
-                    }));
-                }
                 const { id, createdAt: createdOn } = ngoData.sys;
                 return {
                     id,
@@ -123,8 +110,6 @@ export const getAllNgo = async ({
                     category: category.fields.categoryName,
                     yearOfEstablish,
                     contact,
-                    totalAmountRaised: totalAmount,
-                    transactions: transactionList,
                 };
             }),
         };
@@ -210,6 +195,35 @@ export const getCategories = async (categoryName?: string): Promise<CategoryList
                 return {
                     id,
                     categoryName,
+                };
+            }),
+        };
+    } catch (err) {
+        return err.message;
+    }
+};
+
+//fetch all transactions
+
+export const fetchAllTransactions = async (ngoSlug?: string) : Promise<TransactionList> => {
+    const query = {
+        content_type: "transactionDetails",
+        include: 10,
+    };
+
+    if (ngoSlug) {
+        query["fields.ngoSlug"] = ngoSlug;
+    }
+    try {
+        const transactionList = await client.getEntries(query);
+        return {
+            total: transactionList.total,
+            transactions: transactionList.items.map((transaction) => {
+                const { id, ngoSlug, amount } = transaction.fields;
+                return {
+                    id,
+                    ngoSlug,
+                    amount,
                 };
             }),
         };

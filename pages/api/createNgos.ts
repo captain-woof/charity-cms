@@ -48,7 +48,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
                 contentOfPdf
             );
 
-            const category = capitalize(data.fields.category as string);
+            const category = data.fields.category as string;
             const response = await getCategories(category);
             let categoryId: string;
             if (response.total === 0) {
@@ -71,7 +71,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
 
             const ngoCreated = await createNgo(newNgo);
 
-            res.status(200).json(ngoCreated);
+            res.status(201).json(ngoCreated);
         }
     } catch (e) {
         res.status(500).json(e.message);

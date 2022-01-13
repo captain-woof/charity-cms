@@ -10,12 +10,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
      */
 
     try {
-        const ngoData = await getAllNgo({
+        const query = {
             category: req.query.category as string,
             userEmail: req.query.email as string,
             ngoSlug: req.query.slug as string,
-            isVerified: req.query.verified as string,
-        });
+            isVerified: req.query.verified as "true" | "false",
+        };
+        // let verified = req.query.verified as string;
+        // if (verified) {
+        //     if (verified === "true") {
+        //         query["isVerified"] = "true";
+        //     } else {
+        //         query["isVerified"] = "false";
+        //     }
+        // }
+
+        const ngoData = await getAllNgo(query);
         res.status(200).json(ngoData);
     } catch (e) {
         res.status(500).json(e.message);

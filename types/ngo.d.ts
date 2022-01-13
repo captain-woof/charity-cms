@@ -1,5 +1,8 @@
+import formidable from "formidable";
+
 //Ngo interface
 export interface Ngo {
+    id: string;
     title: string;
     description: string;
     ownerName: string;
@@ -8,8 +11,6 @@ export interface Ngo {
     category: string;
     yearOfEstablish: Date;
     contact: string;
-    totalAmountRaised: number;
-    transactions: Array<Transaction>;
     ngoSlug: string;
 }
 
@@ -32,11 +33,24 @@ export interface Ngos {
     total: number;
     ngos: Array<Ngo>;
 }
-interface CategoryList {
-    total : number
+export interface CategoryList {
+    total: number;
     categories: Array<Category>;
 }
-interface Category {
+export interface Category {
     id: string;
     categoryName: string;
+}
+export interface Data {
+    fields: formidable.Fields;
+    files: formidable.Files;
+}
+export interface TransactionList {
+    total: number;
+    transactions: Array<Transaction>;
+}
+export interface Transaction {
+    id: string;
+    ngoSlug: string;
+    amount: number;
 }
