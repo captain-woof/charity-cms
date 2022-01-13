@@ -1,5 +1,5 @@
 const management = require("contentful-management");
-import { Asset, Entry } from "contentful-management";
+import { Asset, Entry, Environment, Space } from "contentful-management";
 import stream from "stream";
 
 const client = management.createClient({
@@ -61,7 +61,8 @@ export const createAsset = async (
         });
 
         asset = await asset.processForAllLocales();
-        asset = await asset.publish();
+        // asset = await asset.archive();
+        // console.log(asset);
         return asset.sys.id;
     } catch (error) {
         return error.message;
@@ -81,6 +82,25 @@ export const createCategory = async (categoryName: string): Promise<string> => {
     entry = await entry.publish();
     return entry.sys.id;
 };
+
+const string_to_slug = (str: string): string => {
+    str = str.replace(/^\s+|\s+$/g, ""); // trim
+    str = str.toLowerCase();
+
+    // remove accents, swap ñ for n, etc
+    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+    var to = "aaaaeeeeiiiioooouuuunc------";
+    for (var i = 0, l = from.length; i < l; i++) {
+        str = str.replace(new RegExp(from.charAt(i), "g"), to.charAt(i));
+    }
+
+    str = str
+        .replace(/[^a-z0-9 -]/g, "") // remove invalid chars
+        .replace(/\s+/g, "-") // collapse whitespace and replace by -
+        .replace(/-+/g, "-"); // collapse dashes
+
+    return str;
+};
 export const createNgo = async ({
     title,
     description,
@@ -93,60 +113,121 @@ export const createNgo = async ({
     imageId,
 }: NgoQuery): Promise<Entry> => {
     try {
-        const space = await client.getSpace(process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID);
-        const env = await space.getEnvironment(process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID);
-        let entry = await env.createEntry("ngo", {
+        const space: Space = await client.getSpace(
+            process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID
+        );
+        const env: Environment = await space.getEnvironment(
+            process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID
+        );
+
+        try {
+            let entry: Entry = await env.createEntry("ngo", {
+                fields: {
+                    title: {
+                        "en-US": title,
+                    },
+
+                    ngoSlug: {
+                        "en-US": string_to_slug(title),
+                    },
+                    description: {
+                        "en-US": description,
+                    },
+                    yearOfEstablish: {
+                        "en-US": yearOfEstablish,
+                    },
+                    ownerName: {
+                        "en-US": ownerName,
+                    },
+                    category: {
+                        "en-US": {
+                            sys: {
+                                type: "Link",
+                                linkType: "Entry",
+                                id: categoryId,
+                            },
+                        },
+                    },
+                    verificationPdf: {
+                        "en-US": {
+                            sys: {
+                                type: "Link",
+                                linkType: "Asset",
+                                id: verificationId,
+                            },
+                        },
+                    },
+                    image: {
+                        "en-US": {
+                            sys: {
+                                type: "Link",
+                                linkType: "Asset",
+                                id: imageId,
+                            },
+                        },
+                    },
+
+                    contact: {
+                        "en-US": contact,
+                    },
+                    charityEmail: {
+                        "en-US": charityEmail,
+                    },
+                },
+            });
+            entry = await entry.publish();
+            let imageAsset: Asset = await env.getAsset(imageId);
+            await imageAsset.publish();
+            let pdfAsset: Asset = await env.getAsset(verificationId);
+            await pdfAsset.publish();
+            return entry;
+        } catch (err) {
+            try {
+                let imageAsset: Asset = await env.getAsset(imageId);
+                let pdfAsset: Asset = await env.getAsset(verificationId);
+                await imageAsset.delete();
+                await pdfAsset.delete();
+            } catch (e) {
+                throw new Error("Cannot delete the existing resource");
+            } finally {
+                throw new Error(`Cannot create new Entry!! and ${err.message}`);
+            }
+        }
+    } catch (err) {
+        return err.message;
+    }
+};
+
+export const createTransaction = async (
+    ngoSlug: string,
+    transactionId: string,
+    amount: number
+): Promise<void> => {
+    try {
+        const space: Space = await client.getSpace(
+            process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID
+        );
+        const env: Environment = await space.getEnvironment(
+            process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID
+        );
+
+        let transactionEntry: Entry = await env.createEntry("transactionDetails", {
             fields: {
-                title: {
-                    "en-US": title,
-                },
-                description: {
-                    "en-US": description,
-                },
-                yearOfEstablish: {
-                    "en-US": yearOfEstablish,
-                },
-                ownerName: {
-                    "en-US": ownerName,
-                },
-                category: {
-                    "en-US": {
-                        sys: {
-                            type: "Link",
-                            linkType: "Entry",
-                            id: categoryId,
-                        },
-                    },
-                },
-                verificationPdf: {
-                    "en-US": {
-                        sys: {
-                            type: "Link",
-                            linkType: "Asset",
-                            id: verificationId,
-                        },
-                    },
-                },
-                image: {
-                    "en-US": {
-                        sys: {
-                            type: "Link",
-                            linkType: "Asset",
-                            id: imageId,
-                        },
-                    },
+                amount: {
+                    "en-US": amount,
                 },
 
-                contact: {
-                    "en-US": contact,
+                id: {
+                    "en-US": transactionId,
                 },
-                charityEmail: {
-                    "en-US": charityEmail,
+
+                ngoSlug: {
+                    "en-US": ngoSlug,
                 },
             },
         });
-        entry = await entry.publish();
-        return entry;
+
+        transactionEntry = await transactionEntry.publish();
     } catch (err) {
         return err.message;
     }

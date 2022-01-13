@@ -37,7 +37,7 @@ export const getAllNgo = async ({
     const query = {
         content_type: "ngo",
         include: 10,
-        select: "sys.createdAt,sys.id,fields.title,fields.ngoSlug,fields.description,fields.ownerName,fields.charityEmail,fields.transactions,fields.image,fields.category,fields.yearOfEstablish,fields.contact",
+        select: "sys.createdAt,sys.id,fields.title,fields.ngoSlug,fields.description,fields.ownerName,fields.charityEmail,fields.image,fields.category,fields.yearOfEstablish,fields.contact",
         // "fields.isVerified": false,
     };
 
@@ -82,22 +82,8 @@ export const getAllNgo = async ({
                     category,
                     yearOfEstablish,
                     contact,
-                    transactions,
                 } = ngoData.fields;
 
-                //this is added because if a ngo has zero transaction then these are the default values
-                let totalAmount: number = 0;
-                let transactionList: Array<Transaction> = new Array();
-
-                if (transactions) {
-                    totalAmount = transactions.reduce((totalAmount, transaction) => {
-                        return (totalAmount += transaction.fields.amount);
-                    }, 0);
-                    transactionList = transactions.map((transaction) => ({
-                        transactionId: transaction.fields.id,
-                        amount: transaction.fields.amount,
-                    }));
-                }
                 const { id, createdAt: createdOn } = ngoData.sys;
                 return {
                     id,
@@ -117,8 +103,6 @@ export const getAllNgo = async ({
                     category: category.fields.categoryName,
                     yearOfEstablish,
                     contact,
-                    totalAmountRaised: totalAmount,
-                    transactions: transactionList,
                 };
             }),
         };
@@ -204,6 +188,35 @@ export const getCategories = async (categoryName?: string): Promise<CategoryList
                 return {
                     id,
                     categoryName,
+                };
+            }),
+        };
+    } catch (err) {
+        return err.message;
+    }
+};
+
+//fetch all transactions
+
+export const fetchAllTransactions = async (ngoSlug?: string) => {
+    const query = {
+        content_type: "transactionDetails",
+        include: 10,
+    };
+
+    if (ngoSlug) {
+        query["fields.ngoSlug"] = ngoSlug;
+    }
+    try {
+        const transactionList = await client.getEntries(query);
+        return {
+            total: transactionList.total,
+            transactions: transactionList.items.map((transaction) => {
+                const { id, ngoSlug, amount } = transaction.fields;
+                return {
+                    id,
+                    ngoSlug,
+                    amount,
                 };
             }),
         };
