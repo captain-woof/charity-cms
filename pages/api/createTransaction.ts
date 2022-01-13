@@ -8,6 +8,8 @@ export const config = {
         bodyParser: false,
     },
 };
+
+// POST payload: slug (ngo), id (of tx), amount (of money) 
 export default async function Handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") {
         try {
