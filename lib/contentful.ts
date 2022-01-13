@@ -1,5 +1,5 @@
 const contentful = require("contentful");
-import { Transaction, Ngos, CategoryList } from "../types/ngo";
+import { TransactionList, Ngos, CategoryList } from "../types/ngo";
 
 //api for fetching all the ngos
 const client = contentful.createClient({
@@ -198,7 +198,7 @@ export const getCategories = async (categoryName?: string): Promise<CategoryList
 
 //fetch all transactions
 
-export const fetchAllTransactions = async (ngoSlug?: string) => {
+export const fetchAllTransactions = async (ngoSlug?: string) : Promise<TransactionList> => {
     const query = {
         content_type: "transactionDetails",
         include: 10,

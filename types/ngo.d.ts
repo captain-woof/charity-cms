@@ -32,15 +32,24 @@ export interface Ngos {
     total: number;
     ngos: Array<Ngo>;
 }
-interface CategoryList {
+export interface CategoryList {
     total: number;
     categories: Array<Category>;
 }
-interface Category {
+export interface Category {
     id: string;
     categoryName: string;
 }
-interface Data {
+export interface Data {
     fields: formidable.Fields;
     files: formidable.Files;
+}
+export interface TransactionList {
+    total: number;
+    transactions: Array<Transaction>;
+}
+export interface Transaction {
+    id: string;
+    ngoSlug: string;
+    amount: number;
 }
