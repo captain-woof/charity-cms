@@ -215,8 +215,7 @@ export const fetchAllTransactions = async (
     }
 
     //if fromDate and toDate both are given
-    console.log(fromDate);
-    console.log(toDate);
+
     if (fromDate && toDate) {
         //condition is to fromDate has to be lesser than toDate
         if (fromDate <= toDate) {
