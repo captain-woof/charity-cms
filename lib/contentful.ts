@@ -1,5 +1,4 @@
 const contentful = require("contentful");
-import { date } from "yup/lib/locale";
 import { TransactionList, Ngos, CategoryList } from "../types/ngo";
 
 //api for fetching all the ngos
