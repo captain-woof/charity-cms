@@ -1,4 +1,5 @@
 const contentful = require("contentful");
+import { date } from "yup/lib/locale";
 import { TransactionList, Ngos, CategoryList } from "../types/ngo";
 
 //api for fetching all the ngos
@@ -198,24 +199,52 @@ export const getCategories = async (categoryName?: string): Promise<CategoryList
 
 //fetch all transactions
 
-export const fetchAllTransactions = async (ngoSlug?: string) : Promise<TransactionList> => {
+export const fetchAllTransactions = async (
+    ngoSlug?: string,
+    fromDate?: Date,
+    toDate?: Date
+): Promise<TransactionList> => {
     const query = {
         content_type: "transactionDetails",
         include: 10,
+        order: "-sys.createdAt",
     };
 
+    //if slug is given
     if (ngoSlug) {
         query["fields.ngoSlug"] = ngoSlug;
     }
+
+    //if fromDate and toDate both are given
+    console.log(fromDate);
+    console.log(toDate);
+    if (fromDate && toDate) {
+        //condition is to fromDate has to be lesser than toDate
+        if (fromDate <= toDate) {
+            query["sys.createdAt[gte]"] = fromDate;
+            query["sys.createdAt[lte]"] = toDate;
+        }
+    }
+    //if only fromDate is given
+    else if (fromDate) {
+        query["sys.createdAt[gte]"] = fromDate;
+    }
+    //if only toDate is given
+    else if (toDate) {
+        query["sys.createdAt[lte]"] = toDate;
+    }
+
     try {
         const transactionList = await client.getEntries(query);
         return {
             total: transactionList.total,
             transactions: transactionList.items.map((transaction) => {
                 const { id, ngoSlug, amount } = transaction.fields;
+                const { createdAt: date } = transaction.sys;
                 return {
                     id,
                     ngoSlug,
+                    date,
                     amount,
                 };
             }),

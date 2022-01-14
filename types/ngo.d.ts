@@ -7,7 +7,7 @@ export interface Ngo {
     description: string;
     ownerName: string;
     charityEmail: string;
-    images: Image;
+    image: Image;
     category: string;
     yearOfEstablish: Date;
     contact: string;
@@ -20,11 +20,6 @@ export interface Image {
     src: string;
     height: number;
     width: number;
-}
-//Transaction interface
-export interface Transaction {
-    transactionId: string;
-    amount: number;
 }
 
 // List of Ngos
@@ -48,8 +43,11 @@ export interface TransactionList {
     total: number;
     transactions: Array<Transaction>;
 }
+//Transaction interface
+
 export interface Transaction {
     id: string;
+    date: Date;
     ngoSlug: string;
     amount: number;
 }
