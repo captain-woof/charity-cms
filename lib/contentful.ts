@@ -27,6 +27,11 @@ interface GetAllNgos {
     isVerified?: "true" | "false";
 }
 
+interface TimeQuery {
+    fromDate: Date;
+    toDate: Date;
+}
+
 //getting the data of all the ngos
 export const getAllNgo = async ({
     category,
@@ -207,24 +212,66 @@ export const getCategories = async (categoryName?: string): Promise<CategoryList
 
 //fetch all transactions
 
-export const fetchAllTransactions = async (ngoSlug?: string) : Promise<TransactionList> => {
+export const fetchAllTransactions = async (
+    ngoSlug?: string,
+    timeQuery?: TimeQuery
+): Promise<TransactionList> => {
     const query = {
         content_type: "transactionDetails",
         include: 10,
+        order: "-sys.createdAt",
     };
 
+    //if slug is given
     if (ngoSlug) {
         query["fields.ngoSlug"] = ngoSlug;
     }
+
+    const { fromDate, toDate } = timeQuery;
+    /**
+     * isNaN is used to check whether the date is valid or not
+     *
+     */
+    //if fromDate and toDate both are given
+
+    // if (!isNaN(fromDate.getTime()) && !isNaN(toDate.getTime())) {
+    //     //condition is to fromDate has to be lesser than toDate
+    //     if (fromDate <= toDate) {
+    //         query["sys.createdAt[gte]"] = fromDate;
+    //         query["sys.createdAt[lte]"] = toDate;
+    //     }
+    // }
+    // //if only fromDate is given
+    // else if (!isNaN(fromDate.getTime())) {
+    //     query["sys.createdAt[gte]"] = fromDate;
+    // }
+    // //if only toDate is given
+    // else if (!isNaN(toDate.getTime())) {
+    //     query["sys.createdAt[lte]"] = toDate;
+    // }
+
+    if (fromDate && toDate) {
+        if (fromDate <= toDate) {
+            query["sys.createdAt[gte]"] = fromDate;
+            query["sys.createdAt[lte]"] = toDate;
+        }
+    } else if (fromDate) {
+        query["sys.createdAt[gte]"] = fromDate;
+    } else if (toDate) {
+        query["sys.createdAt[lte]"] = toDate;
+    }
+
     try {
         const transactionList = await client.getEntries(query);
         return {
             total: transactionList.total,
             transactions: transactionList.items.map((transaction) => {
                 const { id, ngoSlug, amount } = transaction.fields;
+                const { createdAt: date } = transaction.sys;
                 return {
                     id,
                     ngoSlug,
+                    date,
                     amount,
                 };
             }),

@@ -23,11 +23,6 @@ export interface Image {
     height: number;
     width: number;
 }
-//Transaction interface
-export interface Transaction {
-    transactionId: string;
-    amount: number;
-}
 
 // List of Ngos
 export interface Ngos {
@@ -50,8 +45,11 @@ export interface TransactionList {
     total: number;
     transactions: Array<Transaction>;
 }
+//Transaction interface
+
 export interface Transaction {
     id: string;
+    date: Date;
     ngoSlug: string;
     amount: number;
 }
