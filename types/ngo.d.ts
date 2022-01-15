@@ -12,6 +12,7 @@ export interface Ngo {
     yearOfEstablish: Date;
     contact: string;
     ngoSlug: string;
+    isVerified: boolean;
 }
 
 //image interface
@@ -54,3 +55,6 @@ export interface Transaction {
     ngoSlug: string;
     amount: number;
 }
+
+// Ngo registration type
+export type NgoRegistrationType = "NEW_ACCOUNT" | "VERIFICATION_PENDING" | "VERIFIED"
