@@ -26,6 +26,11 @@ interface GetAllNgos {
     isVerified?: "true" | "false";
 }
 
+interface TimeQuery {
+    fromDate: Date;
+    toDate: Date;
+}
+
 //getting the data of all the ngos
 export const getAllNgo = async ({
     category,
@@ -200,8 +205,7 @@ export const getCategories = async (categoryName?: string): Promise<CategoryList
 
 export const fetchAllTransactions = async (
     ngoSlug?: string,
-    fromDate?: Date,
-    toDate?: Date
+    timeQuery?: TimeQuery
 ): Promise<TransactionList> => {
     const query = {
         content_type: "transactionDetails",
@@ -214,21 +218,37 @@ export const fetchAllTransactions = async (
         query["fields.ngoSlug"] = ngoSlug;
     }
 
+    const { fromDate, toDate } = timeQuery;
+    /**
+     * isNaN is used to check whether the date is valid or not
+     *
+     */
     //if fromDate and toDate both are given
 
+    // if (!isNaN(fromDate.getTime()) && !isNaN(toDate.getTime())) {
+    //     //condition is to fromDate has to be lesser than toDate
+    //     if (fromDate <= toDate) {
+    //         query["sys.createdAt[gte]"] = fromDate;
+    //         query["sys.createdAt[lte]"] = toDate;
+    //     }
+    // }
+    // //if only fromDate is given
+    // else if (!isNaN(fromDate.getTime())) {
+    //     query["sys.createdAt[gte]"] = fromDate;
+    // }
+    // //if only toDate is given
+    // else if (!isNaN(toDate.getTime())) {
+    //     query["sys.createdAt[lte]"] = toDate;
+    // }
+
     if (fromDate && toDate) {
-        //condition is to fromDate has to be lesser than toDate
         if (fromDate <= toDate) {
             query["sys.createdAt[gte]"] = fromDate;
             query["sys.createdAt[lte]"] = toDate;
         }
-    }
-    //if only fromDate is given
-    else if (fromDate) {
+    } else if (fromDate) {
         query["sys.createdAt[gte]"] = fromDate;
-    }
-    //if only toDate is given
-    else if (toDate) {
+    } else if (toDate) {
         query["sys.createdAt[lte]"] = toDate;
     }
 
