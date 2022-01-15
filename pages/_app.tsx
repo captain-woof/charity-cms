@@ -3,6 +3,9 @@ import StyledThemeProvider from "../components/providers/theme"
 import Script from "next/script"
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import "react-date-picker/dist/DatePicker.css"
+//import "react-calendar/dist/Calendar.css"
+import "../styles/react-calendar.css"
 
 function MyApp({ Component, pageProps }) {
   return (

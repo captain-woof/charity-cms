@@ -12,3 +12,7 @@ export const roundOffIndian = (num: number): string => {
         return `${num}`
     }
 }
+
+export const sumAllNumbersInList = (numbers: Array<number>): number => {
+    return numbers.reduce((total, current) => (total + current), 0)
+}

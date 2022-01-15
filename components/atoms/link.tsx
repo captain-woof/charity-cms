@@ -5,7 +5,7 @@ import { ChildrenProp, InlineStyled } from '../../types/comps'
 const Anchor = styled.a`
     ${({ theme, color }) => (css`
         text-decoration: none;
-        color: ${color || theme.colors.secondary.main};
+        color: ${color || theme.colors.primary.main};
         width: fit-content;
         transition: ${theme.transition('color').normal};
         position: relative;
@@ -17,7 +17,7 @@ const Anchor = styled.a`
         font-family: ${theme.font.family.secondary};
 
         &:hover {
-            color: ${color || theme.colors.secondary.dark};
+            color: ${color || theme.colors.primary.dark};
         }
 
         &::after {

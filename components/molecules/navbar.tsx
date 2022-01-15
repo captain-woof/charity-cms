@@ -150,7 +150,7 @@ interface IMenuItem {
 // Data for profile links
 const profileMenuItemsData: IMenuItem[] = [
     { href: '/dashboard', text: 'Dashboard' },
-    { href: '/dashboard/edit-site', text: 'Edit site' },
+    { href: '/dashboard/edit-ngo', text: 'Edit NGO details' },
     { href: '/dashboard/edit-profile', text: 'Edit profile' },
     { href: '/auth/logout', text: 'Log out' }
 ]
