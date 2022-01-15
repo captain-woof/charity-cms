@@ -42,7 +42,7 @@ export const getAllNgo = async ({
     const query = {
         content_type: "ngo",
         include: 10,
-        select: "sys.createdAt,sys.id,fields.title,fields.ngoSlug,fields.description,fields.ownerName,fields.charityEmail,fields.image,fields.category,fields.yearOfEstablish,fields.contact",
+        select: "sys.createdAt,sys.id,fields.title,fields.ngoSlug,fields.description,fields.ownerName,fields.charityEmail,fields.image,fields.category,fields.verificationPdf,fields.yearOfEstablish,fields.contact",
         // "fields.isVerified": false,
     };
 
@@ -87,6 +87,7 @@ export const getAllNgo = async ({
                     category,
                     yearOfEstablish,
                     contact,
+                    verificationPdf,
                 } = ngoData.fields;
 
                 const { id, createdAt: createdOn } = ngoData.sys;
@@ -104,6 +105,15 @@ export const getAllNgo = async ({
                         src: `https:${image.fields.file.url}`,
                         height: image.fields.file.details.image.height,
                         width: image.fields.file.details.image.width,
+                    },
+                    verificationPdf: {
+                        id: verificationPdf.sys.id,
+                        title: verificationPdf.fields.title,
+                        url: `https:${verificationPdf.fields.file.url}`,
+                        size: `${(
+                            verificationPdf.fields.file.details.size / 1024
+                        ).toFixed(2)}kb`,
+                        type: verificationPdf.fields.file.contentType,
                     },
                     category: category.fields.categoryName,
                     yearOfEstablish,

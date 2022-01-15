@@ -1,5 +1,5 @@
 const management = require("contentful-management");
-import { Asset, Entry, Environment, Space } from "contentful-management";
+import { Asset, Entry, Environment, Space, Upload } from "contentful-management";
 import stream from "stream";
 
 const client = management.createClient({
@@ -31,15 +31,15 @@ export const createAsset = async (
         let type: string = json.type;
         let name: string = json.name;
 
-        const space = await client.getSpace(process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID);
-        const env = await space.getEnvironment(process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID);
-        const upload = await env.createUpload({
+        const space : Space = await client.getSpace(process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID);
+        const env : Environment = await space.getEnvironment(process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID);
+        const upload : Upload = await env.createUpload({
             file: file,
         });
 
         // console.log(upload);
 
-        let asset = await env.createAsset({
+        let asset : Asset = await env.createAsset({
             fields: {
                 title: {
                     "en-US": name,
@@ -232,3 +232,10 @@ export const createTransaction = async (
         return err.message;
     }
 };
+
+export const updateNgo = async() : Promise<void>=>{
+
+    const space : Space = await client.getSpace(process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID);
+    const env : Environment = await space.getEnvironment(process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID);
+    
+}

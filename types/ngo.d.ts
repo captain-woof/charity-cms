@@ -9,8 +9,17 @@ export interface Ngo {
     charityEmail: string;
     image: Image;
     category: string;
+    verificationPdf: Pdf;
     yearOfEstablish: Date;
     contact: string;
+}
+
+interface Pdf {
+    id: string;
+    title: string;
+    url: string;
+    size: string;
+    type: string;
 }
 
 //image interface
