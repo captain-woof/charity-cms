@@ -107,7 +107,9 @@ export default function ForgorPassword() {
                                 }}>
                                     Enter the email you signed up with.
                                 </p>
-                                <TextfieldFormik label='Email' name='email' />
+                                <TextfieldFormik label='Email' name='email' inputProps={{
+                                    type: "email"
+                                }} />
                                 <Button disabled={!isValid || isSubmitting} buttonProps={{
                                     type: 'submit'
                                 }}>Submit</Button>

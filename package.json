@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/react-icons": "^3.0.0",
+    "axios": "^0.24.0",
     "babel-plugin-styled-components": "^1.13.3",
     "contentful": "^9.1.4",
     "contentful-management": "^7.47.2",
@@ -21,8 +22,10 @@
     "next": "12.0.7",
     "nookies": "^2.5.2",
     "react": "17.0.2",
+    "react-date-picker": "^8.3.6",
     "react-dom": "17.0.2",
     "react-icons": "^4.3.1",
+    "react-toastify": "^8.1.0",
     "styled-components": "^5.3.3",
     "yup": "^0.32.11"
   },

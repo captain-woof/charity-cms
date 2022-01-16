@@ -54,7 +54,7 @@ const NgosContainer = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: var(--sp-300);
+    gap: var(--sp-500);
     
     @media (max-width: 480px){
         justify-content: center;

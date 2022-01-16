@@ -133,9 +133,15 @@ export default function Signup() {
                                 handleSubmit()
                             }}>
                                 <TextfieldFormik label='Name' name='displayName' />
-                                <TextfieldFormik label='Email' name='email' />
-                                <TextfieldFormik label='Password' name='password' inputProps={{ type: 'password' }} />
-                                <TextfieldFormik label='Confirm password' name='passwordCnf' inputProps={{ type: 'password' }} />
+                                <TextfieldFormik label='Email' name='email' inputProps={{
+                                    type: "email"
+                                }} />
+                                <TextfieldFormik label='Password' name='password' inputProps={{
+                                    type: 'password'
+                                }} />
+                                <TextfieldFormik label='Confirm password' name='passwordCnf' inputProps={{
+                                    type: 'password'
+                                }} />
                                 <Button disabled={pending || (!isValid)} buttonProps={{
                                     type: 'submit'
                                 }}>Sign up</Button>

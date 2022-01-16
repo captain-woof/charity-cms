@@ -15,3 +15,7 @@
 ### 3. Project shared drive 🐅
 
 [Shared drive link](https://drive.google.com/drive/folders/1_h7JrrD1CM8rkW28EalzCTEOSySvWX-x?usp=sharing)
+
+### 4. Links 🔍
+
+1. [Razorpay initialization options](https://razorpay.com/docs/payment-gateway/web-integration/standard/checkout-options/)

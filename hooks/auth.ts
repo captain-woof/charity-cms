@@ -225,33 +225,40 @@ export const useUpdateUser = () => {
     const { error, pending, setError, setPending, setSuccess, success } = useStatus()
     const user = useUser()
     const updateUser = useCallback(async (type: 'email' | 'password' | 'profilePic' | 'name', newData: string) => {
-        setError(false)
-        setPending(true)
-        setSuccess(false)
+        if (!!user) {
+            // Update user only if Email/Password was used for auth
+            user.providerData.forEach((provider) => {
+                if(provider.providerId !== "password") return
+            })
 
-        try {
-            switch (type) {
-                case 'email':
-                    await updateEmail(user, newData)
-                    setSuccess("Your new email has been set.")
-                    break
-                case 'password':
-                    await updatePassword(user, newData)
-                    setSuccess("Your new password has been set.")
-                    break
-                case 'profilePic':
-                    updateProfile(user, { photoURL: newData })
-                    setSuccess("Your profile picture is now updated.")
-                    break
-                case 'name':
-                    updateProfile(user, { displayName: newData })
-                    setSuccess("Your display name is now changed.")
-                    break
+            setError(false)
+            setPending(true)
+            setSuccess(false)
+
+            try {
+                switch (type) {
+                    case 'email':
+                        await updateEmail(user, newData)
+                        setSuccess("Your new email has been set.")
+                        break
+                    case 'password':
+                        await updatePassword(user, newData)
+                        setSuccess("Your new password has been set.")
+                        break
+                    case 'profilePic':
+                        updateProfile(user, { photoURL: newData })
+                        setSuccess("Your profile picture is now updated.")
+                        break
+                    case 'name':
+                        updateProfile(user, { displayName: newData })
+                        setSuccess("Your display name is now changed.")
+                        break
+                }
+            } catch (e) {
+                setError(getMessageFromException(e))
+            } finally {
+                setPending(false)
             }
-        } catch (e) {
-            setError(getMessageFromException(e))
-        } finally {
-            setPending(false)
         }
     }, [setError, setPending, setSuccess, user])
 

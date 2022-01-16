@@ -13,7 +13,7 @@ export const getStaticPaths: GetStaticPaths = async (ctx: GetStaticPathsContext)
                 slug: verfiedNgo.ngoSlug
             }
         })),
-        fallback: true
+        fallback: "blocking"
     }
 }
 

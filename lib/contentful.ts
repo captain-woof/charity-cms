@@ -1,5 +1,5 @@
 const contentful = require("contentful");
-import { Transaction, Image, Ngo, Ngos, CategoryList, Category } from "../types/ngo";
+import { TransactionList, Ngos, CategoryList } from "../types/ngo";
 
 //api for fetching all the ngos
 const client = contentful.createClient({
@@ -19,13 +19,17 @@ interface NgoCount {
 interface TotalCategory {
     totalCategories: number;
 }
-
 interface GetAllNgos {
     category?: string;
     userEmail?: string;
     ngoSlug?: string;
-    isVerified?: string;
     titleSearch?: string;
+    isVerified?: "true" | "false";
+}
+
+interface TimeQuery {
+    fromDate: Date;
+    toDate: Date;
 }
 
 //getting the data of all the ngos
@@ -40,7 +44,7 @@ export const getAllNgo = async ({
     const query = {
         content_type: "ngo",
         include: 10,
-        select: "sys.createdAt,sys.id,fields.title,fields.description,fields.ownerName,fields.charityEmail,fields.transactions,fields.image,fields.category,fields.yearOfEstablish,fields.contact,fields.ngoSlug",
+        select: "sys.createdAt,sys.id,fields.title,fields.ngoSlug,fields.description,fields.ownerName,fields.charityEmail,fields.image,fields.category,fields.verificationPdf,fields.yearOfEstablish,fields.contact,fields.isVerified"        
         // "fields.isVerified": false,
     };
 
@@ -56,11 +60,13 @@ export const getAllNgo = async ({
     }
 
     //filter the ngolist as per verified
-    if (isVerified) {
-        query["fields.isVerified"] = isVerified === "true";
+    if (isVerified === "true") {
+        query["fields.isVerified"] = true;
+    } else if (isVerified === "false") {
+        query["fields.isVerified"] = false;
     }
 
-    //if useremail has passed
+    //if user-email has passed
     if (userEmail) {
         query["fields.charityEmail"] = userEmail;
     }
@@ -81,29 +87,17 @@ export const getAllNgo = async ({
                 const {
                     title,
                     description,
+                    ngoSlug,
                     ownerName,
                     charityEmail,
                     image,
                     category,
                     yearOfEstablish,
                     contact,
-                    transactions,
-                    ngoSlug
+                    isVerified,
+                    verificationPdf,
                 } = ngoData.fields;
 
-                //this is added because if a ngo has zero transaction then these are the default values
-                let totalAmount: number = 0;
-                let transactionList: Array<Transaction> = new Array();
-
-                if (transactions) {
-                    totalAmount = transactions.reduce((totalAmount, transaction) => {
-                        return (totalAmount += transaction.fields.amount);
-                    }, 0);
-                    transactionList = transactions.map((transaction) => ({
-                        transactionId: transaction.fields.id,
-                        amount: transaction.fields.amount,
-                    }));
-                }
                 const { id, createdAt: createdOn } = ngoData.sys;
                 return {
                     id,
@@ -120,11 +114,17 @@ export const getAllNgo = async ({
                         height: image.fields.file.details.image.height,
                         width: image.fields.file.details.image.width,
                     },
+                    verificationPdf: {
+                        id: verificationPdf.sys.id,
+                        title: verificationPdf.fields.title,
+                        url: `https:${verificationPdf.fields.file.url}`,
+                        size: verificationPdf.fields.file.details.size,
+                        type: verificationPdf.fields.file.contentType,
+                    },
                     category: category.fields.categoryName,
                     yearOfEstablish,
                     contact,
-                    totalAmountRaised: totalAmount,
-                    transactions: transactionList,
+                    isVerified
                 };
             }),
         };
@@ -210,6 +210,77 @@ export const getCategories = async (categoryName?: string): Promise<CategoryList
                 return {
                     id,
                     categoryName,
+                };
+            }),
+        };
+    } catch (err) {
+        return err.message;
+    }
+};
+
+//fetch all transactions
+
+export const fetchAllTransactions = async (
+    ngoSlug?: string,
+    timeQuery?: TimeQuery
+): Promise<TransactionList> => {
+    const query = {
+        content_type: "transactionDetails",
+        include: 10,
+        order: "-sys.createdAt",
+    };
+
+    //if slug is given
+    if (ngoSlug) {
+        query["fields.ngoSlug"] = ngoSlug;
+    }
+
+    const { fromDate, toDate } = timeQuery;
+    /**
+     * isNaN is used to check whether the date is valid or not
+     *
+     */
+    //if fromDate and toDate both are given
+
+    // if (!isNaN(fromDate.getTime()) && !isNaN(toDate.getTime())) {
+    //     //condition is to fromDate has to be lesser than toDate
+    //     if (fromDate <= toDate) {
+    //         query["sys.createdAt[gte]"] = fromDate;
+    //         query["sys.createdAt[lte]"] = toDate;
+    //     }
+    // }
+    // //if only fromDate is given
+    // else if (!isNaN(fromDate.getTime())) {
+    //     query["sys.createdAt[gte]"] = fromDate;
+    // }
+    // //if only toDate is given
+    // else if (!isNaN(toDate.getTime())) {
+    //     query["sys.createdAt[lte]"] = toDate;
+    // }
+
+    if (fromDate && toDate) {
+        if (fromDate <= toDate) {
+            query["sys.createdAt[gte]"] = fromDate;
+            query["sys.createdAt[lte]"] = toDate;
+        }
+    } else if (fromDate) {
+        query["sys.createdAt[gte]"] = fromDate;
+    } else if (toDate) {
+        query["sys.createdAt[lte]"] = toDate;
+    }
+
+    try {
+        const transactionList = await client.getEntries(query);
+        return {
+            total: transactionList.total,
+            transactions: transactionList.items.map((transaction) => {
+                const { id, ngoSlug, amount } = transaction.fields;
+                const { createdAt: date } = transaction.sys;
+                return {
+                    id,
+                    ngoSlug,
+                    date,
+                    amount,
                 };
             }),
         };

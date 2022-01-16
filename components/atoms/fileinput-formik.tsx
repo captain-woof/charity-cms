@@ -2,17 +2,18 @@ import styled, { css } from "styled-components";
 import { InlineStyled, VariadicProps } from "../../types/comps";
 import { useField } from "formik";
 import ErrorMessage from './error-message'
+import { convertBytesToMb } from "../../utils/numerics";
 
-interface ITextfield extends InlineStyled {
+interface FileInput extends InlineStyled {
     name: string
     label: string
     color?: string
     bgColor?: string
     inputProps?: VariadicProps
-    list?: string
+    fileInfo: FileInfo
 }
 
-const TextfieldAndErrorWrapper = styled.div`
+const InputAndErrorWrapper = styled.div`
     position: relative;
     display: flex;
     flex-direction: column;
@@ -20,26 +21,15 @@ const TextfieldAndErrorWrapper = styled.div`
     width: 100%;
 `
 
-const TextfieldWrapper = styled.div`
-    ${({ theme }) => css`
-        position: relative;
-        height: 2.5rem;
-        border-radius: 6px;
-        width: 100%;
-    `}
-`;
-
-const Input = styled.input<{ error?: boolean }>`
+const FileInput = styled.input<{ error?: boolean }>`
     ${({ theme, color, error }) => css`
-        position: absolute;
+        position: relative;
         height: 100%;
         width: 100%;
         border: none;
         outline: 2px solid ${theme.colors.primary.light};
-        top: 0;
-        left: 0;
-        border-radius: inherit;
-        padding: 0 1rem;
+        border-radius: 6px;
+        padding: 8px;
 
         &:focus {
           outline: ${color ? `2px solid ${color}` : `2px solid ${theme.colors.primary.dark}`};
@@ -57,43 +47,48 @@ interface ILabel {
 
 const Label = styled.label<ILabel>`
     ${({ theme, color, bgColor }) => css`
-        position: absolute;
+        position: relative;
         height: fit-content;
         width: fit-content;
-        top: 0.5rem;
-        left: 1rem;
         color: ${theme.colors.black.light};
         cursor: text;
         transition: ${theme.transition('all').fast};
         background-color: ${bgColor || theme.colors.white.light};
 
-        ${Input}:focus + &,
-        ${Input}:not(:placeholder-shown) + & {
-          font-size: 0.85rem;
-          top: -0.7rem;
-          left: 0.75rem;
-          padding: 0 0.25rem;
-        }
-
-        ${Input}:focus + & {
+        &:focus {
           color: ${color || theme.colors.primary.main};
         }
     `}
 `;
 
+interface FileInfo {
+    name: string
+    sizeInBytes: number
+}
 
-export default function TextfieldFormik({ name, label, list, color, bgColor, inputProps, style }: ITextfield) {
+const FileInfo = styled.p`
+    ${({ theme }) => css`
+        position: relative;
+        height: fit-content;
+        width: fit-content;
+        color: ${theme.colors.primary.main};
+    `}
+`;
+
+
+export default function FileInputFormik({ name, label, color, bgColor, inputProps, style, fileInfo }: FileInput) {
     const [inputPropsFormik, metaFormik] = useField(name)
 
     return (
-        <TextfieldAndErrorWrapper>
-            <TextfieldWrapper style={style}>
-                <Input error={(!!metaFormik.error) && metaFormik.touched} list={list} id={name} name={name} color={color} autoComplete="off" placeholder=" " {...inputProps} {...inputPropsFormik} />
-                <Label htmlFor={name} bgColor={bgColor} color={color}>
-                    {label}
-                </Label>
-            </TextfieldWrapper>
+        <InputAndErrorWrapper style={style}>
+            <Label htmlFor={name} bgColor={bgColor} color={color}>
+                {label}
+            </Label>
+            <FileInput error={(!!metaFormik.error) && metaFormik.touched} id={name} name={name} color={color} type="file" {...inputProps} {...inputPropsFormik} value={undefined}/>
+            {!!fileInfo?.name &&
+                <FileInfo>Uploaded: <b>{fileInfo.name}</b>{!!fileInfo.sizeInBytes && `, ${convertBytesToMb(fileInfo.sizeInBytes).toFixed(2)} MB`}</FileInfo>
+            }
             <ErrorMessage show={!!(metaFormik.touched && metaFormik.error)} error={metaFormik.error} style={{ marginTop: '0.25rem' }} />
-        </TextfieldAndErrorWrapper>
+        </InputAndErrorWrapper>
     );
 }
