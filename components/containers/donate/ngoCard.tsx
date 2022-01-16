@@ -15,8 +15,8 @@ export default function NgoCard({ ngo }: NgoCard) {
         <Link passHref href={ `/ngo/${ngo.ngoSlug}` }><a>
             <Paper raiseOnHover style={{
                 padding: "var(--sp-400) var(--sp-300)",
-                minWidth: "300px",
-                borderRadius: "4px"
+                width: "300px",
+                borderRadius: "12px"
             }}>
                 <ImgContainer>
                     <Image src={ngo.image.src} alt={ngo.title} layout="fill" objectFit="cover" />
