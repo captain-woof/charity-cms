@@ -18,6 +18,8 @@ interface Data {
 const capitalize = (text: string): string => {
     return text.replace(/\b\w/g, (l) => l.toUpperCase());
 };
+
+// POST Payload: title, description, yearOfEstablish, charityEmail, contact, ownerName, category, image, verificationPdf 
 export default async function Handler(req: NextApiRequest, res: NextApiResponse) {
     try {
         if (req.method === "POST") {
@@ -39,14 +41,14 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
             let pdfName = pdf.originalFilename;
             let pdfType = pdf.mimetype;
 
-            const imageId = await createAsset(
-                { name: imageName, type: imageType },
-                contentOfImage
-            );
-            const pdfId = await createAsset(
-                { name: pdfName, type: pdfType },
-                contentOfPdf
-            );
+            const [imageId, pdfId] = await Promise.all([
+                createAsset(
+                    { name: imageName, type: imageType },
+                    contentOfImage
+                ), createAsset(
+                    { name: pdfName, type: pdfType },
+                    contentOfPdf
+                )])
 
             const category = data.fields.category as string;
             const response = await getCategories(category);
