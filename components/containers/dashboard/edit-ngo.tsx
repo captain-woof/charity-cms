@@ -99,12 +99,6 @@ export default function Dashboard({ ngoCategories }: Dashboard) {
         }
     }, [ngoRegistered, ngoStatus, user])
 
-    // TODO: REMOVE THIS
-    useEffect(() => {
-        console.log("Registered NGO", ngoRegistered)
-        console.log("User", user)
-    }, [ngoRegistered, user])
-
     return (
         <>
             {(loading) ?

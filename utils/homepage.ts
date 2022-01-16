@@ -1,5 +1,6 @@
 import { getProxiedUrl } from "./image-proxy"
-import { allTransaction,ngoCount,categoryCount } from "../lib/contentful"
+import { allTransaction,ngoCount,categoryCount, getAllNgo } from "../lib/contentful"
+import { Ngos } from "../types/ngo";
 
 // Function to get stats for homepage
 interface IHomepageStats {
@@ -31,13 +32,7 @@ interface IHomepageOrgs extends Array<IHomepageOrg> {
     [index: number]: IHomepageOrg
 }
 
-export const getHomepageOrgs = async (): Promise<IHomepageOrgs> => {
-    // TODO: Implement logic to get data from Contentful
-
-    // Dummy data
-    return (new Array(8) as IHomepageOrgs).fill({
-        orgName: "Demo Org",
-        orgUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        orgLogoUrl: getProxiedUrl('https://unsplash.it/250/250') 
-    })
+export const getHomepageOrgs = async (): Promise<Ngos> => {
+    const ngos = await getAllNgo({ isVerified: "true" })
+    return ngos
 }

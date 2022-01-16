@@ -16,10 +16,11 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     try {
         if (req.method === "POST" || req.method === "PUT") {
             // Check if user is authenticated
-            const cookies = parseCookies({ req })
+            const cookies = parseCookies({ req });
             if (cookies.token) {
-                const { status } = await verifyIdToken(cookies.token)
-                if (status) { // Only if user is authenticated
+                const { status } = await verifyIdToken(cookies.token);
+                if (status) {
+                    // Only if user is authenticated
                     const data: Data = await new Promise((resolve, reject) => {
                         const form = new formidable.IncomingForm();
                         form.parse(req, (err, fields, files) => {
@@ -49,7 +50,10 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
                         const contentOfPdf = fs.readFileSync(pdf.filepath);
                         let pdfName = pdf.originalFilename;
                         let pdfType = pdf.mimetype;
-                        pdfId = await createAsset({ name: pdfName, type: pdfType }, contentOfPdf);
+                        pdfId = await createAsset(
+                            { name: pdfName, type: pdfType },
+                            contentOfPdf
+                        );
                     }
 
                     if (data.fields.category) {
@@ -76,17 +80,18 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
                     }
 
                     if (pdfId) {
-                        updatedNgo["pdfId"] = pdfId;
+                        updatedNgo["verificationId"] = pdfId;
                     }
 
                     if (categoryId) {
                         updatedNgo["categoryId"] = categoryId;
                     }
                     // console.log(updatedNgo);
-                    let lol = await updateNgo(ngoId, updatedNgo);
-                    res.status(200).json(lol);
+                    let newNgo = await updateNgo(ngoId, updatedNgo);
+                    res.status(200).json(newNgo);
                 }
-            } else { // If not unauthenticated
+            } else {
+                // If not unauthenticated
                 res.status(401).json({
                     message: "You must be authenticated!",
                 });
