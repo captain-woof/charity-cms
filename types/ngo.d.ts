@@ -20,7 +20,7 @@ interface Pdf {
     id: string;
     title: string;
     url: string;
-    size: string;
+    size: number;
     type: string;
 }
 

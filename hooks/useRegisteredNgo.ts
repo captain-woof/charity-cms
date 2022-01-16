@@ -14,11 +14,10 @@ export const useRegisteredNgo = () => {
     useEffect(() => {
         (async () => {
             try {
-                setLoading(true)
                 if (!!user) { // If account has been fetched from Firebase
+                    setLoading(true)
                     const ngo = await getAllNgo({
-                        userEmail: user.email,
-                        isVerified: "true"
+                        userEmail: user.email
                     })
                     // If no ngo came back, this is a new account
                     // If ngo came back, check the verified flag
@@ -26,6 +25,7 @@ export const useRegisteredNgo = () => {
                         setNgoStatus("NEW_ACCOUNT")
                     } else if (!ngo.ngos[0].isVerified) {
                         setNgoStatus("VERIFICATION_PENDING")
+                        setNgoRegistered(ngo.ngos[0])
                     } else if (ngo.ngos[0].isVerified) {
                         setNgoStatus("VERIFIED")
                         setNgoRegistered(ngo.ngos[0])

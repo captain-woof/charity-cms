@@ -16,3 +16,11 @@ export const roundOffIndian = (num: number): string => {
 export const sumAllNumbersInList = (numbers: Array<number>): number => {
     return numbers.reduce((total, current) => (total + current), 0)
 }
+
+export const convertMbToBytes = (sizeInMb: number): number => {
+    return (sizeInMb * 1024 * 1024)
+}
+
+export const convertBytesToMb = (sizeInBytes: number): number => {
+    return (sizeInBytes / (1024 * 1024))
+}

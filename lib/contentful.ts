@@ -118,9 +118,7 @@ export const getAllNgo = async ({
                         id: verificationPdf.sys.id,
                         title: verificationPdf.fields.title,
                         url: `https:${verificationPdf.fields.file.url}`,
-                        size: `${(
-                            verificationPdf.fields.file.details.size / 1024
-                        ).toFixed(2)}kb`,
+                        size: verificationPdf.fields.file.details.size,
                         type: verificationPdf.fields.file.contentType,
                     },
                     category: category.fields.categoryName,

@@ -1,7 +1,7 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import { parseCookies } from "nookies"
-import { verifyIdToken } from "../utils/auth-server"
-import Dashboard from "../components/containers/dashboard"
+import { verifyIdToken } from "../../utils/auth-server"
+import Dashboard from "../../components/containers/dashboard"
 
 // Check if user is logged in (Server side)
 export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {

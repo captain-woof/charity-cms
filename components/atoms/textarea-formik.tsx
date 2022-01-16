@@ -3,7 +3,7 @@ import { InlineStyled, VariadicProps } from "../../types/comps";
 import { useField } from "formik";
 import ErrorMessage from './error-message'
 
-interface ITextfield extends InlineStyled {
+interface ITextArea extends InlineStyled {
     name: string
     label: string
     color?: string
@@ -20,26 +20,17 @@ const TextfieldAndErrorWrapper = styled.div`
     width: 100%;
 `
 
-const TextfieldWrapper = styled.div`
-    ${({ theme }) => css`
-        position: relative;
-        height: 2.5rem;
-        border-radius: 6px;
-        width: 100%;
-    `}
-`;
-
-const Input = styled.input<{ error?: boolean }>`
+const TextArea = styled.textarea<{ error?: boolean }>`
     ${({ theme, color, error }) => css`
-        position: absolute;
+        position: relative;
         height: 100%;
         width: 100%;
         border: none;
         outline: 2px solid ${theme.colors.primary.light};
-        top: 0;
-        left: 0;
-        border-radius: inherit;
+        border-radius: 6px;
         padding: 0 1rem;
+        resize: none;
+        padding: 12px;
 
         &:focus {
           outline: ${color ? `2px solid ${color}` : `2px solid ${theme.colors.primary.dark}`};
@@ -57,42 +48,30 @@ interface ILabel {
 
 const Label = styled.label<ILabel>`
     ${({ theme, color, bgColor }) => css`
-        position: absolute;
+        position: relative;
         height: fit-content;
         width: fit-content;
-        top: 0.5rem;
-        left: 1rem;
         color: ${theme.colors.black.light};
         cursor: text;
         transition: ${theme.transition('all').fast};
         background-color: ${bgColor || theme.colors.white.light};
 
-        ${Input}:focus + &,
-        ${Input}:not(:placeholder-shown) + & {
-          font-size: 0.85rem;
-          top: -0.7rem;
-          left: 0.75rem;
-          padding: 0 0.25rem;
-        }
-
-        ${Input}:focus + & {
+        &:focus {
           color: ${color || theme.colors.primary.main};
         }
     `}
 `;
 
 
-export default function TextfieldFormik({ name, label, list, color, bgColor, inputProps, style }: ITextfield) {
+export default function TextAreaFormik({ name, label, color, bgColor, inputProps, style }: ITextArea) {
     const [inputPropsFormik, metaFormik] = useField(name)
 
     return (
-        <TextfieldAndErrorWrapper>
-            <TextfieldWrapper style={style}>
-                <Input error={(!!metaFormik.error) && metaFormik.touched} list={list} id={name} name={name} color={color} autoComplete="off" placeholder=" " {...inputProps} {...inputPropsFormik} />
-                <Label htmlFor={name} bgColor={bgColor} color={color}>
-                    {label}
-                </Label>
-            </TextfieldWrapper>
+        <TextfieldAndErrorWrapper style={style}>
+            <Label htmlFor={name} bgColor={bgColor} color={color}>
+                {label}
+            </Label>
+            <TextArea error={(!!metaFormik.error) && metaFormik.touched} id={name} name={name} color={color} autoComplete="off" placeholder=" " rows={6} {...inputProps} {...inputPropsFormik} />
             <ErrorMessage show={!!(metaFormik.touched && metaFormik.error)} error={metaFormik.error} style={{ marginTop: '0.25rem' }} />
         </TextfieldAndErrorWrapper>
     );
