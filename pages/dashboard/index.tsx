@@ -16,9 +16,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
                 }
             }
         }
-    }
-    return {
-        props: {}
+    } else {
+        return {
+            redirect: {
+                destination: '/auth/login',
+                permanent: false,
+            }
+        }
     }
 }
 
