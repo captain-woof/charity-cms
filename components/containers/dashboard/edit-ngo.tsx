@@ -6,7 +6,6 @@ import { useRegisteredNgo } from "../../../hooks/useRegisteredNgo"
 import { Heading4 } from "../../atoms/headings"
 import SectionBox from "../../atoms/sectionBox"
 import Paragraph from "../../atoms/paragraph"
-import { Link } from "../../atoms/link"
 import LinkNext from 'next/link'
 import Button from "../../atoms/button"
 import styled, { css } from "styled-components"
