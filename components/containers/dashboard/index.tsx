@@ -27,7 +27,7 @@ export default function Dashboard() {
 
     // Runs stats query when date pickers change date range
     useEffect(() => {
-        if (ngoStatus === "VERIFIED") {
+        if (ngoStatus === "VERIFIED" && !!ngoRegistered) {
             if (statsFromDate.getTime() > statsToDate.getTime()) {
                 showToast("Invalid date range", "error")
             } else {
@@ -94,8 +94,23 @@ export default function Dashboard() {
                     {/* Verified */}
                     {ngoStatus === "VERIFIED" &&
                         <>
-                            {/* Donation statistics */}
+                            {/* Generated page */}
                             <SectionBox>
+                                <Heading4>Your page</Heading4>
+                                <Paragraph>
+                                    Your organisation page is up and running! If you need to change any part of it, you can do it from your dashboard.
+                                </Paragraph>
+                                {!!ngoRegistered &&
+                                    <Link href={`/ngo/${ngoRegistered.ngoSlug}`}>
+                                        See your page
+                                    </Link>
+                                }
+                            </SectionBox>
+
+                            {/* Donation statistics */}
+                            <SectionBox style={{
+                                marginTop: "var(--sp-600)"
+                            }}>
                                 <Heading4>Donations</Heading4>
 
                                 {/* Stat boxes */}
