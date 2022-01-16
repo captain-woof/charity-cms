@@ -9,10 +9,19 @@ export interface Ngo {
     charityEmail: string;
     image: Image;
     category: string;
+    verificationPdf: Pdf;
     yearOfEstablish: Date;
     contact: string;
     ngoSlug: string;
     isVerified: boolean;
+}
+
+interface Pdf {
+    id: string;
+    title: string;
+    url: string;
+    size: string;
+    type: string;
 }
 
 //image interface
