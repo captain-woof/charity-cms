@@ -15,6 +15,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
                     permanent: false,
                 }
             }
+        } else {
+            return {
+                props: {}
+            }
         }
     } else {
         return {
