@@ -22,7 +22,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
                     resolve({ fields, files });
                 });
             });
-            console.log(data);
+            // console.log(data);
             let imageId: string;
             let pdfId: string;
             let categoryId: string;
