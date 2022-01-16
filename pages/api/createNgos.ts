@@ -1,8 +1,9 @@
 import formidable from "formidable";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createAsset, createCategory, createNgo } from "../../lib/management";
+import { createAsset, createNgo } from "../../lib/management";
 import { getCategories } from "../../lib/contentful";
 // import { promises, readFileSync } from "fs";
+import { Data } from "../../types/ngo";
 import fs from "fs";
 
 export const config = {
@@ -10,10 +11,10 @@ export const config = {
         bodyParser: false,
     },
 };
-interface Data {
-    fields: formidable.Fields;
-    files: formidable.Files;
-}
+// interface Data {
+//     fields: formidable.Fields;
+//     files: formidable.Files;
+// }
 
 const capitalize = (text: string): string => {
     return text.replace(/\b\w/g, (l) => l.toUpperCase());
@@ -32,6 +33,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
                     resolve({ fields, files });
                 });
             });
+
             const image = data.files.image as formidable.File;
             const pdf = data.files.verificationPdf as formidable.File;
             const contentOfImage = fs.readFileSync(image.filepath);
@@ -53,11 +55,10 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
             const category = data.fields.category as string;
             const response = await getCategories(category);
             let categoryId: string;
-            if (response.total === 0) {
-                categoryId = await createCategory(category);
-            } else {
-                categoryId = response.categories[0].id;
-            }
+            // if (response.total === 0) {
+            //     categoryId = await createCategory(category);
+
+            categoryId = response.categories[0].id;
 
             const newNgo = {
                 title: data.fields.title as string,

@@ -22,6 +22,17 @@ interface NgoQuery {
     verificationId: string;
     imageId: string;
 }
+interface UpdateQuery {
+    title?: string;
+    description?: string;
+    yearOfEstablish?: number;
+    contact?: string;
+    charityEmail?: string;
+    ownerName?: string;
+    categoryId?: string;
+    verificationId?: string;
+    imageId?: string;
+}
 
 export const createAsset = async (
     json: jsonData,
@@ -31,15 +42,19 @@ export const createAsset = async (
         let type: string = json.type;
         let name: string = json.name;
 
-        const space : Space = await client.getSpace(process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID);
-        const env : Environment = await space.getEnvironment(process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID);
-        const upload : Upload = await env.createUpload({
+        const space: Space = await client.getSpace(
+            process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID
+        );
+        const env: Environment = await space.getEnvironment(
+            process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID
+        );
+        const upload: Upload = await env.createUpload({
             file: file,
         });
 
         // console.log(upload);
 
-        let asset : Asset = await env.createAsset({
+        let asset: Asset = await env.createAsset({
             fields: {
                 title: {
                     "en-US": name,
@@ -233,9 +248,122 @@ export const createTransaction = async (
     }
 };
 
-export const updateNgo = async() : Promise<void>=>{
+export const updateNgo = async (
+    ngoId: string,
+    {
+        title,
+        description,
+        yearOfEstablish,
+        contact,
+        ownerName,
+        charityEmail,
+        categoryId,
+        verificationId,
+        imageId,
+    }: UpdateQuery
+): Promise<Entry> => {
+    try {
+        const space: Space = await client.getSpace(
+            process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID
+        );
+        const env: Environment = await space.getEnvironment(
+            process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID
+        );
+        let oldImageId: string;
+        let oldPdfId: string;
+        try {
+            let ngoEntry: Entry = await env.getEntry(ngoId);
 
-    const space : Space = await client.getSpace(process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID);
-    const env : Environment = await space.getEnvironment(process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID);
-    
-}
+            if (title) {
+                ngoEntry.fields.title["en-US"] = title;
+            }
+            if (description) {
+                ngoEntry.fields.description["en-US"] = description;
+            }
+
+            if (yearOfEstablish) {
+                ngoEntry.fields.yearOfEstablish["en-US"] = yearOfEstablish;
+            }
+
+            if (contact) {
+                ngoEntry.fields.contact["en-US"] = contact;
+            }
+
+            if (imageId) {
+                // console.log(imageId);
+                oldImageId = ngoEntry.fields.image["en-US"].sys.id;
+
+                ngoEntry.fields.image["en-US"].sys.id = imageId;
+                // let oldImageAsset: Asset = await env.getAsset(oldImageId);
+                // await oldImageAsset.unpublish();
+                // await oldImageAsset.delete();
+            }
+
+            if (verificationId) {
+                oldPdfId = ngoEntry.fields.verificationPdf["en-US"].sys.id;
+                ngoEntry.fields.verificationPdf["en-US"].sys.id = verificationId;
+                // let oldPdfAsset: Asset = await env.getAsset(oldPdfId);
+                // await oldPdfAsset.unpublish();
+                // await oldPdfAsset.delete();
+            }
+
+            if (categoryId) {
+                ngoEntry.fields.categoryId["en-US"].sys.id = categoryId;
+            }
+
+            if (ownerName) {
+                ngoEntry.fields.ownerName["en-US"] = ownerName;
+            }
+
+            if (charityEmail) {
+                ngoEntry.fields.charityEmail["en-US"] = charityEmail;
+            }
+
+            ngoEntry.fields.isVerified["en-US"] = false;
+
+            ngoEntry = await ngoEntry.update();
+            ngoEntry = await ngoEntry.publish();
+
+            if (imageId) {
+                let newImageAsset: Asset = await env.getAsset(imageId);
+                await newImageAsset.publish();
+            }
+
+            if (verificationId) {
+                let newPdfAsset: Asset = await env.getAsset(verificationId);
+                await newPdfAsset.publish();
+            }
+
+            if (oldImageId) {
+                // console.log(oldImageId);
+                let oldImageAsset: Asset = await env.getAsset(oldImageId);
+                await oldImageAsset.unpublish();
+                await oldImageAsset.delete();
+            }
+
+            if (oldPdfId) {
+                let oldPdfAsset: Asset = await env.getAsset(oldPdfId);
+                await oldPdfAsset.unpublish();
+                await oldPdfAsset.delete();
+            }
+            return ngoEntry;
+        } catch (error) {
+            try {
+                if (imageId) {
+                    let imageAsset: Asset = await env.getAsset(imageId);
+                    await imageAsset.delete();
+                }
+                if (verificationId) {
+                    let pdfAsset: Asset = await env.getAsset(verificationId);
+                    await pdfAsset.delete();
+                }
+            } catch (err) {
+                throw new Error("Cannot Delete existing resource");
+            } finally {
+                throw new Error(`Cannot update Ngo Entry and ${error.message}`);
+            }
+        }
+    } catch (error) {
+        return error.message;
+    }
+};
