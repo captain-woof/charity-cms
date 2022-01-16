@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Button from "../../atoms/button";
 import { AiOutlineSmile as GetStartedButtonIcon } from 'react-icons/ai'
+import { Ngos } from "../../../types/ngo";
 
 const NgoWrapper = styled.a`
     display: flex;
@@ -14,6 +15,9 @@ const NgoWrapper = styled.a`
     gap: 0.5rem 0;
     position: relative;
     text-decoration: none;
+    justify-content: flex-start;
+    align-items: center;
+    width: 132px;
 `
 
 const NgoLogoWrapper = styled.div`
@@ -40,16 +44,11 @@ const NgoName = styled.p`
     `}
 `
 
-interface INgoWithUs {
-    orgName: string
-    orgUrl: string
-    orgLogoUrl: string
-}
-interface INgosWithUs {
-    orgsData: Array<INgoWithUs>
+interface NgosWithUs {
+    orgsData: Ngos
 }
 
-export default function NgosWithUs({ orgsData }: INgosWithUs) {
+export default function NgosWithUs({ orgsData }: NgosWithUs) {
     return (
         <Container style={{
             display: 'flex',
@@ -63,13 +62,13 @@ export default function NgosWithUs({ orgsData }: INgosWithUs) {
                 justifyContent: 'center',
                 marginTop: '2rem'
             }}>
-                {orgsData.map((orgData, index) => (
-                    <Link key={index} href={orgData.orgUrl} passHref>
+                {orgsData.ngos.map((orgData, index) => (
+                    <Link key={index} href={`/ngo/${orgData.ngoSlug}`} passHref>
                         <NgoWrapper target='__blank'>
                             <NgoLogoWrapper>
-                                <Image src={orgData.orgLogoUrl} alt={`${orgData.orgName} logo`} layout='fill' />
+                                <Image src={orgData.image?.src} alt={`${orgData?.title} logo`} layout='fill' />
                             </NgoLogoWrapper>
-                            <NgoName>{orgData.orgName}</NgoName>
+                            <NgoName>{orgData?.title}</NgoName>
                         </NgoWrapper>
                     </Link>
                 ))}
