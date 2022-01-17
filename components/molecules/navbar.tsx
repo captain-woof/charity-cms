@@ -167,7 +167,7 @@ export default function Navbar() {
     const navlinksMenuItemsData: IMenuItem[] = useMemo(() => {
         // Items for both logged in and logged out states
         let commonItemsData = [
-            { href: `/know-more`, text: 'Know more' },
+            { href: `/#what-is-this-site`, text: 'About' },
             { href: `/donate`, text: 'Donate' }
         ]
 

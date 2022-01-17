@@ -22,6 +22,7 @@ import { useInputFile } from "../../../hooks/useInputFile"
 import axios from "axios"
 import { useUpdateUser, useUser } from "../../../hooks/auth"
 import Row from "../../atoms/row"
+import Seo from "../../atoms/seo"
 
 // Filetypes supported
 const imageFileTypes = ["image/bmp", "image/gif", "image/png", "image/svg+xml", "image/webp", "image/jpeg"]
@@ -35,7 +36,7 @@ interface Dashboard {
     ngoCategories: CategoryList
 }
 
-export default function Dashboard({ ngoCategories }: Dashboard) {
+export default function EditNgo({ ngoCategories }: Dashboard) {
     const { loading, ngoRegistered, ngoStatus } = useRegisteredNgo()
     const [verificationPdfFile, onVerificationPdfFileInput, verificationPdfFileStat] = useInputFile(MAX_FILE_SIZE, verificationDocFileTypes) // State to hold verification doc
     const [imageFile, onImageFileInput, imageFileStat] = useInputFile(MAX_FILE_SIZE, imageFileTypes)
@@ -103,155 +104,93 @@ export default function Dashboard({ ngoCategories }: Dashboard) {
         <>
             {(loading) ?
                 <Loader /> :
-                <MaxWidthContainer>
+                <>
+                    <Seo description="Edit your organisation's details." keywords="charity cms dashboard" title="Edit NGO" url={`${process.env.NEXT_PUBLIC_APP_ORIGIN}/dashboard/edit-ngo`}/>
 
-                    <SectionBox>
-                        {/* Heading */}
-                        <Heading4>
-                            {ngoStatus === "NEW_ACCOUNT" ? "Add details" : "Edit details"}
-                        </Heading4>
+                    <MaxWidthContainer>
 
-                        {/* Sub Heading text */}
-                        <Paragraph>
-                            Use the below form to {ngoStatus === "NEW_ACCOUNT" ? "add your organisation details, and submit it for verification. Verification usually takes a few days to be done." : "edit your organisation's details."}
-                        </Paragraph>
+                        <SectionBox>
+                            {/* Heading */}
+                            <Heading4>
+                                {ngoStatus === "NEW_ACCOUNT" ? "Add details" : "Edit details"}
+                            </Heading4>
 
-                        {/* Form */}
-                        <Formik validationSchema={validationSchema} initialValues={initialValues} onSubmit={async (values, helpers) => {
-                            /* Handle form submission */
+                            {/* Sub Heading text */}
+                            <Paragraph>
+                                Use the below form to {ngoStatus === "NEW_ACCOUNT" ? "add your organisation details, and submit it for verification. Verification usually takes a few days to be done." : "edit your organisation's details."}
+                            </Paragraph>
 
-                            // Function to validate files
-                            const validateFiles = () => {
-                                if (ngoStatus === "NEW_ACCOUNT") { // If files are mandatory
-                                    /* Validate image file */
-                                    if (imageFileStat === "NO_FILE_CHOSEN") {
-                                        helpers.setFieldError("image", "Please upload a banner image for your organisation.")
-                                    }
-                                    else if (imageFileStat === "FILE_SIZE_EXCEEDED") {
-                                        helpers.setFieldError("image", "Maximum file size allowed is 5 MB.")
-                                    } else if (imageFileStat === "UNSUPPORTED_FILE_TYPE") {
-                                        helpers.setFieldError("image", "Unsupported file type. Only GIF, JPG, SVG, WEBP, PNG and BMP files are supported.")
-                                    }
+                            {/* Form */}
+                            <Formik validationSchema={validationSchema} initialValues={initialValues} onSubmit={async (values, helpers) => {
+                                /* Handle form submission */
 
-                                    /* Validate verification file */
-                                    if (verificationPdfFileStat === "NO_FILE_CHOSEN") {
-                                        helpers.setFieldError("verificationPdf", "Please upload a proof of registration (PDF).")
-                                    }
-                                    else if (verificationPdfFileStat === "FILE_SIZE_EXCEEDED") {
-                                        helpers.setFieldError("verificationPdf", "Maximum file size allowed is 5 MB.")
-                                    } else if (verificationPdfFileStat === "UNSUPPORTED_FILE_TYPE") {
-                                        helpers.setFieldError("verificationPdf", "Unsupported file type. Only a PDF file is supported.")
-                                    }
-
-                                    // Return
-                                    return (imageFileStat === "OK" && verificationPdfFileStat === "OK")
-                                } else { // If files are optional
-                                    return true
-                                }
-                            }
-
-                            // Function to create form data
-                            const createFormData = (fields: { [key: string]: any }) => {
-                                const formData = new FormData()
-                                for (let fieldName in fields) {
-                                    formData.append(fieldName, fields[fieldName])
-                                }
-                                return formData
-                            }
-
-                            // Logics are different for Adding NGO and Editing NGO
-                            if (ngoStatus === "NEW_ACCOUNT") { // If NGO is new
-                                /* Submit form only if everything is valid */
-                                if (validateFiles()) {
-                                    // Get fields to send
-                                    const { category, charityEmail, contact, description, ownerName, title, yearOfEstablish } = values
-
-                                    // Get form data for axios
-                                    const formData = createFormData({
-                                        category,
-                                        charityEmail,
-                                        contact,
-                                        description,
-                                        ownerName,
-                                        title,
-                                        yearOfEstablish,
-                                        image: imageFile,
-                                        verificationPdf: verificationPdfFile
-                                    })
-
-                                    // Create promise that sends payload to api
-                                    const createNgoPromise = new Promise((resolve, reject) => {
-                                        axios.post("/api/createNgos", formData, {
-                                            headers: {
-                                                'Content-Type': 'multipart/form-data'
-                                            }
-                                        }).then((response) => {
-                                            if (response.status === 201) {
-                                                resolve(null)
-                                            } else {
-                                                throw new Error(JSON.stringify(response))
-                                            }
-                                        }).catch((e) => {
-                                            console.log("Error in sending payload", e)
-                                            reject(null)
-                                        }).finally(() => {
-                                            helpers.setSubmitting(false)
-                                        })
-                                    })
-
-                                    // Show notification and resolve promise
-                                    await showCompleteToast(createNgoPromise, {
-                                        error: "Error! Please try again!",
-                                        pending: "Please wait...",
-                                        success: "Done!"
-                                    })
-                                } else { // If files validation failed
-                                    helpers.setSubmitting(false)
-                                }
-
-                            } else { // If NGO is not new
-                                /* Submit form only if everything is valid */
-                                if (validateFiles()) {
-                                    // Find fields that have been changed
-                                    const changedFields = {}
-                                    for (let fieldName in values) {
-                                        if (fieldName !== "verificationPdf" && fieldName !== "image") {
-                                            if (values[fieldName] !== initialValues[fieldName]) {
-                                                changedFields[fieldName] = values[fieldName]
-                                            }
+                                // Function to validate files
+                                const validateFiles = () => {
+                                    if (ngoStatus === "NEW_ACCOUNT") { // If files are mandatory
+                                        /* Validate image file */
+                                        if (imageFileStat === "NO_FILE_CHOSEN") {
+                                            helpers.setFieldError("image", "Please upload a banner image for your organisation.")
                                         }
-                                    }
-                                    if (imageFileChanged) {
-                                        changedFields["image"] = imageFile
-                                    }
-                                    if (verificationPdfFileChanged) {
-                                        changedFields["verificationPdf"] = verificationPdfFile
-                                    }
+                                        else if (imageFileStat === "FILE_SIZE_EXCEEDED") {
+                                            helpers.setFieldError("image", "Maximum file size allowed is 5 MB.")
+                                        } else if (imageFileStat === "UNSUPPORTED_FILE_TYPE") {
+                                            helpers.setFieldError("image", "Unsupported file type. Only GIF, JPG, SVG, WEBP, PNG and BMP files are supported.")
+                                        }
 
-                                    // Update only if at least one field was changed
-                                    if (Object.keys(changedFields).length !== 0) {
-                                        // Get form data to send
+                                        /* Validate verification file */
+                                        if (verificationPdfFileStat === "NO_FILE_CHOSEN") {
+                                            helpers.setFieldError("verificationPdf", "Please upload a proof of registration (PDF).")
+                                        }
+                                        else if (verificationPdfFileStat === "FILE_SIZE_EXCEEDED") {
+                                            helpers.setFieldError("verificationPdf", "Maximum file size allowed is 5 MB.")
+                                        } else if (verificationPdfFileStat === "UNSUPPORTED_FILE_TYPE") {
+                                            helpers.setFieldError("verificationPdf", "Unsupported file type. Only a PDF file is supported.")
+                                        }
+
+                                        // Return
+                                        return (imageFileStat === "OK" && verificationPdfFileStat === "OK")
+                                    } else { // If files are optional
+                                        return true
+                                    }
+                                }
+
+                                // Function to create form data
+                                const createFormData = (fields: { [key: string]: any }) => {
+                                    const formData = new FormData()
+                                    for (let fieldName in fields) {
+                                        formData.append(fieldName, fields[fieldName])
+                                    }
+                                    return formData
+                                }
+
+                                // Logics are different for Adding NGO and Editing NGO
+                                if (ngoStatus === "NEW_ACCOUNT") { // If NGO is new
+                                    /* Submit form only if everything is valid */
+                                    if (validateFiles()) {
+                                        // Get fields to send
+                                        const { category, charityEmail, contact, description, ownerName, title, yearOfEstablish } = values
+
+                                        // Get form data for axios
                                         const formData = createFormData({
-                                            ...changedFields,
-                                            id: ngoRegistered.id
+                                            category,
+                                            charityEmail,
+                                            contact,
+                                            description,
+                                            ownerName,
+                                            title,
+                                            yearOfEstablish,
+                                            image: imageFile,
+                                            verificationPdf: verificationPdfFile
                                         })
 
-                                        // Create promise that updates Firebase user data (IF NEEDED), and sends payload to api
-                                        const editNgoPromise = new Promise(async (resolve, reject) => {
-                                            if ("charityEmail" in changedFields) { // Need to change user email
-                                                await updateUser("email", values.charityEmail)
-                                            }
-                                            if ("ownerName" in changedFields) { // Need to change user's display name
-                                                await updateUser("name", values.ownerName)
-                                            }
-
-                                            // Send payload to API
-                                            axios.post("/api/updateNgo", formData, {
+                                        // Create promise that sends payload to api
+                                        const createNgoPromise = new Promise((resolve, reject) => {
+                                            axios.post("/api/createNgos", formData, {
                                                 headers: {
                                                     'Content-Type': 'multipart/form-data'
                                                 }
                                             }).then((response) => {
-                                                if (response.status === 200) {
+                                                if (response.status === 201) {
                                                     resolve(null)
                                                 } else {
                                                     throw new Error(JSON.stringify(response))
@@ -265,99 +204,165 @@ export default function Dashboard({ ngoCategories }: Dashboard) {
                                         })
 
                                         // Show notification and resolve promise
-                                        await showCompleteToast(editNgoPromise, {
+                                        await showCompleteToast(createNgoPromise, {
                                             error: "Error! Please try again!",
                                             pending: "Please wait...",
                                             success: "Done!"
                                         })
+                                    } else { // If files validation failed
+                                        helpers.setSubmitting(false)
+                                    }
+
+                                } else { // If NGO is not new
+                                    /* Submit form only if everything is valid */
+                                    if (validateFiles()) {
+                                        // Find fields that have been changed
+                                        const changedFields = {}
+                                        for (let fieldName in values) {
+                                            if (fieldName !== "verificationPdf" && fieldName !== "image") {
+                                                if (values[fieldName] !== initialValues[fieldName]) {
+                                                    changedFields[fieldName] = values[fieldName]
+                                                }
+                                            }
+                                        }
+                                        if (imageFileChanged) {
+                                            changedFields["image"] = imageFile
+                                        }
+                                        if (verificationPdfFileChanged) {
+                                            changedFields["verificationPdf"] = verificationPdfFile
+                                        }
+
+                                        // Update only if at least one field was changed
+                                        if (Object.keys(changedFields).length !== 0) {
+                                            // Get form data to send
+                                            const formData = createFormData({
+                                                ...changedFields,
+                                                id: ngoRegistered.id
+                                            })
+
+                                            // Create promise that updates Firebase user data (IF NEEDED), and sends payload to api
+                                            const editNgoPromise = new Promise(async (resolve, reject) => {
+                                                if ("charityEmail" in changedFields) { // Need to change user email
+                                                    await updateUser("email", values.charityEmail)
+                                                }
+                                                if ("ownerName" in changedFields) { // Need to change user's display name
+                                                    await updateUser("name", values.ownerName)
+                                                }
+
+                                                // Send payload to API
+                                                axios.post("/api/updateNgo", formData, {
+                                                    headers: {
+                                                        'Content-Type': 'multipart/form-data'
+                                                    }
+                                                }).then((response) => {
+                                                    if (response.status === 200) {
+                                                        resolve(null)
+                                                    } else {
+                                                        throw new Error(JSON.stringify(response))
+                                                    }
+                                                }).catch((e) => {
+                                                    console.log("Error in sending payload", e)
+                                                    reject(null)
+                                                }).finally(() => {
+                                                    helpers.setSubmitting(false)
+                                                })
+                                            })
+
+                                            // Show notification and resolve promise
+                                            await showCompleteToast(editNgoPromise, {
+                                                error: "Error! Please try again!",
+                                                pending: "Please wait...",
+                                                success: "Done!"
+                                            })
+                                        }
                                     }
                                 }
-                            }
-                        }}>
-                            {({ values, handleSubmit, setFieldValue, isSubmitting, setFieldTouched }) => (
-                                <NgoForm onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+                            }}>
+                                {({ values, handleSubmit, setFieldValue, isSubmitting, setFieldTouched }) => (
+                                    <NgoForm onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
 
-                                    {/* Name */}
-                                    <TextfieldFormik name="ownerName" label="Your name" />
+                                        {/* Name */}
+                                        <TextfieldFormik name="ownerName" label="Your name" />
 
-                                    {/* Title */}
-                                    <TextfieldFormik name="title" label="Organisation name" />
+                                        {/* Title */}
+                                        <TextfieldFormik name="title" label="Organisation name" />
 
-                                    {/* Year of establishment */}
-                                    <TextfieldFormik name="yearOfEstablish" label="Year of establishment" inputProps={{
-                                        type: "number"
-                                    }} />
+                                        {/* Year of establishment */}
+                                        <TextfieldFormik name="yearOfEstablish" label="Year of establishment" inputProps={{
+                                            type: "number"
+                                        }} />
 
-                                    {/* Contact number */}
-                                    <TextfieldFormik name="contact" label="Contact number" inputProps={{
-                                        type: "tel"
-                                    }} />
+                                        {/* Contact number */}
+                                        <TextfieldFormik name="contact" label="Contact number" inputProps={{
+                                            type: "tel"
+                                        }} />
 
-                                    {/* NGO email */}
-                                    <TextfieldFormik name="charityEmail" label="Email" inputProps={{
-                                        type: "email",
-                                        disabled: ngoStatus === "NEW_ACCOUNT"
-                                    }} />
+                                        {/* NGO email */}
+                                        <TextfieldFormik name="charityEmail" label="Email" inputProps={{
+                                            type: "email",
+                                            disabled: ngoStatus === "NEW_ACCOUNT"
+                                        }} />
 
-                                    {/* Description */}
-                                    <TextAreaFormik name="description" label="Description" />
+                                        {/* Description */}
+                                        <TextAreaFormik name="description" label="Description" />
 
-                                    {/* Image */}
-                                    <FileInputFormik name="image" label="Banner image" inputProps={{
-                                        onInput: (e) => {
-                                            onImageFileInput(e, ngoStatus === "NEW_ACCOUNT")
-                                            setImageFileChanged(true)
-                                        },
-                                        accept: imageFileTypes.join(", ")
-                                    }} fileInfo={{
-                                        name: ngoRegistered?.image.alt || imageFile?.name,
-                                        sizeInBytes: null
-                                    }} />
+                                        {/* Image */}
+                                        <FileInputFormik name="image" label="Banner image" inputProps={{
+                                            onInput: (e) => {
+                                                onImageFileInput(e, ngoStatus === "NEW_ACCOUNT")
+                                                setImageFileChanged(true)
+                                            },
+                                            accept: imageFileTypes.join(", ")
+                                        }} fileInfo={{
+                                            name: ngoRegistered?.image.alt || imageFile?.name,
+                                            sizeInBytes: null
+                                        }} />
 
-                                    {/* Categories */}
-                                    <RadioButtons name="category" label="Category" valuesAndLabels={ngoCategories.categories.map(({ categoryName, id }) => ({
-                                        label: categoryName,
-                                        value: categoryName
-                                    }))} selectedValue={values.category} />
+                                        {/* Categories */}
+                                        <RadioButtons name="category" label="Category" valuesAndLabels={ngoCategories.categories.map(({ categoryName, id }) => ({
+                                            label: categoryName,
+                                            value: categoryName
+                                        }))} selectedValue={values.category} />
 
-                                    {/* Verification PDF */}
-                                    <FileInputFormik name="verificationPdf" label="Registration document" inputProps={{
-                                        onInput: (e) => {
-                                            onVerificationPdfFileInput(e, ngoStatus === "NEW_ACCOUNT")
-                                            setverificationPdfFileChanged(true)
-                                        },
-                                        accept: verificationDocFileTypes.join(", ")
-                                    }} fileInfo={{
-                                        name: ngoRegistered?.verificationPdf?.title || verificationPdfFile?.name,
-                                        sizeInBytes: ngoRegistered?.verificationPdf?.size || verificationPdfFile?.size
-                                    }} />
+                                        {/* Verification PDF */}
+                                        <FileInputFormik name="verificationPdf" label="Registration document" inputProps={{
+                                            onInput: (e) => {
+                                                onVerificationPdfFileInput(e, ngoStatus === "NEW_ACCOUNT")
+                                                setverificationPdfFileChanged(true)
+                                            },
+                                            accept: verificationDocFileTypes.join(", ")
+                                        }} fileInfo={{
+                                            name: ngoRegistered?.verificationPdf?.title || verificationPdfFile?.name,
+                                            sizeInBytes: ngoRegistered?.verificationPdf?.size || verificationPdfFile?.size
+                                        }} />
 
-                                    {/* Action buttons */}
-                                    <Row vCenter style={{
-                                        gap: "var(--sp-400)",
-                                        justifyContent: "flex-end"
-                                    }}>
-                                        {/* Go back */}
-                                        <LinkNext passHref href="/dashboard"><a>
-                                            <Button buttonProps={{
+                                        {/* Action buttons */}
+                                        <Row vCenter style={{
+                                            gap: "var(--sp-400)",
+                                            justifyContent: "flex-end"
+                                        }}>
+                                            {/* Go back */}
+                                            <LinkNext passHref href="/dashboard"><a>
+                                                <Button buttonProps={{
+                                                    type: "submit"
+                                                }}>Go back</Button>
+                                            </a></LinkNext>
+
+                                            {/* Submit button */}
+                                            <Button disabled={isSubmitting} buttonProps={{
                                                 type: "submit"
-                                            }}>Go back</Button>
-                                        </a></LinkNext>
+                                            }}>Submit</Button>
+                                        </Row>
 
-                                        {/* Submit button */}
-                                        <Button disabled={isSubmitting} buttonProps={{
-                                            type: "submit"
-                                        }}>Submit</Button>
-                                    </Row>
+                                    </NgoForm>
+                                )}
+                            </Formik>
 
-                                </NgoForm>
-                            )}
-                        </Formik>
-
-                    </SectionBox>
+                        </SectionBox>
 
 
-                </MaxWidthContainer>
+                    </MaxWidthContainer>
+                </>
             }
             <Footer />
         </>
