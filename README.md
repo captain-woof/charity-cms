@@ -1,4 +1,5 @@
-# README
+# Charity CMS
+![GitHub](https://img.shields.io/github/license/captain-woof/charity-cms?label=License) ![Lines of code](https://img.shields.io/tokei/lines/github/captain-woof/charity-cms?label=Total%20lines) ![GitHub repo file count](https://img.shields.io/github/directory-file-count/captain-woof/charity-cms?label=Files) ![GitHub contributors](https://img.shields.io/github/contributors/captain-woof/charity-cms?label=Contributors) ![GitHub package.json dynamic](https://img.shields.io/github/package-json/keywords/captain-woof/charity-cms?label=Keywords)
 
 ### 1. Setting up development environment 🚀
 
