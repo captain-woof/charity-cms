@@ -18,6 +18,7 @@ import LinkNext from 'next/link'
 import Button from "../../atoms/button"
 import styled from "styled-components"
 import Footer from "../../molecules/footer"
+import Seo from "../../atoms/seo"
 
 export default function Dashboard() {
     const { loading, ngoRegistered, ngoStatus } = useRegisteredNgo()
@@ -55,116 +56,119 @@ export default function Dashboard() {
         <>
             {(loading) ?
                 <Loader /> :
-                <MaxWidthContainer>
-                    {/* Greeting */}
-                    <Heading2 style={{
-                        marginBottom: "var(--sp-500)"
-                    }}>
-                        Hi, {(ngoRegistered?.ownerName || "welcome!").split(" ")[0]}
-                    </Heading2>
+                <>
+                    <Seo description="Dashboard for NGOs registered with Charity CMS" keywords="charity cms dashboard" title="Dashboard" url={`${process.env.NEXT_PUBLIC_APP_ORIGIN}/dashboard`}/>
+                    <MaxWidthContainer>
+                        {/* Greeting */}
+                        <Heading2 style={{
+                            marginBottom: "var(--sp-500)"
+                        }}>
+                            Hi, {(ngoRegistered?.ownerName || "welcome!").split(" ")[0]}
+                        </Heading2>
 
-                    {/* Show appropriate UI for ngo */}
+                        {/* Show appropriate UI for ngo */}
 
-                    {/* New account */}
-                    {ngoStatus === "NEW_ACCOUNT" &&
-                        <SectionBox>
-                            <Heading4>Action needed!</Heading4>
-                            <Paragraph>
-                                Welcome! To get started, you must complete your registration by providing us with some details about your organisation.
-                            </Paragraph>
-                            <Link href="/dashboard/edit-ngo">
-                                Click here to continue
-                            </Link>
-                        </SectionBox>
-                    }
-
-                    {/* Verification pending */}
-                    {ngoStatus === "VERIFICATION_PENDING" &&
-                        <SectionBox>
-                            <Heading4>Verification pending!</Heading4>
-                            <Paragraph>
-                                We are evaluating and verifying the details you sent to us. Check back in a few days! You can also make changes to your application if you want.
-                            </Paragraph>
-                            <Link href="/dashboard/edit-ngo">
-                                Edit details
-                            </Link>
-                        </SectionBox>
-                    }
-
-                    {/* Verified */}
-                    {ngoStatus === "VERIFIED" &&
-                        <>
-                            {/* Generated page */}
+                        {/* New account */}
+                        {ngoStatus === "NEW_ACCOUNT" &&
                             <SectionBox>
-                                <Heading4>Your page</Heading4>
+                                <Heading4>Action needed!</Heading4>
                                 <Paragraph>
-                                    Your organisation page is up and running! If you need to change any part of it, you can do it from your dashboard.
+                                    Welcome! To get started, you must complete your registration by providing us with some details about your organisation.
                                 </Paragraph>
-                                {!!ngoRegistered &&
-                                    <Link href={`/ngo/${ngoRegistered.ngoSlug}`}>
-                                        See your page
-                                    </Link>
-                                }
+                                <Link href="/dashboard/edit-ngo">
+                                    Click here to continue
+                                </Link>
                             </SectionBox>
+                        }
 
-                            {/* Donation statistics */}
-                            <SectionBox style={{
-                                marginTop: "var(--sp-600)"
-                            }}>
-                                <Heading4>Donations</Heading4>
-
-                                {/* Stat boxes */}
-                                <Row wrap hCenter vCenter style={{
-                                    gap: "var(--sp-400)",
-                                    marginTop: "var(--sp-400)"
-                                }}>
-                                    {/* Donations amount received */}
-                                    <StatBox title="Donations received" stat={`₹ ${roundOffIndian(!!ngoTransactionsList ? sumAllNumbersInList(ngoTransactionsList.transactions.map(({ amount }) => (amount))) : 0)}`} />
-
-                                    {/* Number of people donated */}
-                                    <StatBox title="People donated" stat={roundOffIndian(!!ngoTransactionsList ? ngoTransactionsList.total : 0)} />
-                                </Row>
-
-                                {/* Date range pickers */}
-                                <DatePickersRow>
-                                    <div>
-                                        From <DatePicker value={statsFromDate} onChange={setStatsFromDate} maxDate={new Date()} />
-                                    </div>
-
-                                    <div>
-                                        to <DatePicker value={statsToDate} onChange={setStatsToDate} maxDate={getDateFromToday(1)} />
-                                    </div>
-                                </DatePickersRow>
-
-                            </SectionBox>
-
-                            {/* Actions */}
-                            <SectionBox style={{
-                                marginTop: "var(--sp-600)"
-                            }}>
-                                <Heading4>Actions</Heading4>
+                        {/* Verification pending */}
+                        {ngoStatus === "VERIFICATION_PENDING" &&
+                            <SectionBox>
+                                <Heading4>Verification pending!</Heading4>
                                 <Paragraph>
-                                    These are the actions you can take with your account.
+                                    We are evaluating and verifying the details you sent to us. Check back in a few days! You can also make changes to your application if you want.
                                 </Paragraph>
-
-                                {/* Action buttons */}
-                                <Row wrap style={{
-                                    gap: "var(--sp-400)"
-                                }}>
-                                    {/* Edit profile */}
-                                    <LinkNext passHref href="/dashboard/edit-profile"><a>
-                                        <Button>Edit profile</Button>
-                                    </a></LinkNext>
-
-                                    {/* Edit NGO details */}
-                                    <LinkNext passHref href="/dashboard/edit-ngo"><a>
-                                        <Button>Edit organisation details</Button>
-                                    </a></LinkNext>
-                                </Row>
+                                <Link href="/dashboard/edit-ngo">
+                                    Edit details
+                                </Link>
                             </SectionBox>
-                        </>
-                    }
-                </MaxWidthContainer>
+                        }
+
+                        {/* Verified */}
+                        {ngoStatus === "VERIFIED" &&
+                            <>
+                                {/* Generated page */}
+                                <SectionBox>
+                                    <Heading4>Your page</Heading4>
+                                    <Paragraph>
+                                        Your organisation page is up and running! If you need to change any part of it, you can do it from your dashboard.
+                                    </Paragraph>
+                                    {!!ngoRegistered &&
+                                        <Link href={`/ngo/${ngoRegistered.ngoSlug}`}>
+                                            See your page
+                                        </Link>
+                                    }
+                                </SectionBox>
+
+                                {/* Donation statistics */}
+                                <SectionBox style={{
+                                    marginTop: "var(--sp-600)"
+                                }}>
+                                    <Heading4>Donations</Heading4>
+
+                                    {/* Stat boxes */}
+                                    <Row wrap hCenter vCenter style={{
+                                        gap: "var(--sp-400)",
+                                        marginTop: "var(--sp-400)"
+                                    }}>
+                                        {/* Donations amount received */}
+                                        <StatBox title="Donations received" stat={`₹ ${roundOffIndian(!!ngoTransactionsList ? sumAllNumbersInList(ngoTransactionsList.transactions.map(({ amount }) => (amount))) : 0)}`} />
+
+                                        {/* Number of people donated */}
+                                        <StatBox title="People donated" stat={roundOffIndian(!!ngoTransactionsList ? ngoTransactionsList.total : 0)} />
+                                    </Row>
+
+                                    {/* Date range pickers */}
+                                    <DatePickersRow>
+                                        <div>
+                                            From <DatePicker value={statsFromDate} onChange={setStatsFromDate} maxDate={new Date()} />
+                                        </div>
+
+                                        <div>
+                                            to <DatePicker value={statsToDate} onChange={setStatsToDate} maxDate={getDateFromToday(1)} />
+                                        </div>
+                                    </DatePickersRow>
+
+                                </SectionBox>
+
+                                {/* Actions */}
+                                <SectionBox style={{
+                                    marginTop: "var(--sp-600)"
+                                }}>
+                                    <Heading4>Actions</Heading4>
+                                    <Paragraph>
+                                        These are the actions you can take with your account.
+                                    </Paragraph>
+
+                                    {/* Action buttons */}
+                                    <Row wrap style={{
+                                        gap: "var(--sp-400)"
+                                    }}>
+                                        {/* Edit profile */}
+                                        <LinkNext passHref href="/dashboard/edit-profile"><a>
+                                            <Button>Edit profile</Button>
+                                        </a></LinkNext>
+
+                                        {/* Edit NGO details */}
+                                        <LinkNext passHref href="/dashboard/edit-ngo"><a>
+                                            <Button>Edit organisation details</Button>
+                                        </a></LinkNext>
+                                    </Row>
+                                </SectionBox>
+                            </>
+                        }
+                    </MaxWidthContainer>
+                </>
             }
             <Footer />
         </>

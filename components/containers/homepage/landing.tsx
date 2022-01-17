@@ -4,6 +4,7 @@ import styled, { css, useTheme } from "styled-components"
 import { Heading1, Heading3, Heading5 } from "../../atoms/headings"
 import Button from "../../atoms/button"
 import { Link } from "../../atoms/link"
+import Seo from "../../atoms/seo"
 
 // Sidebar
 const Sidebar = styled.main`
@@ -71,22 +72,25 @@ const images = [
 export default function Landing() {
     const theme = useTheme()
     return (
-        <Container>
-            <ChangingImages style={{ position: 'absolute', inset: 0, zIndex: 1 }} images={images} altPrefix="Landing page image" />
-            <Sidebar>
-                <SidebarContents>
-                    <Heading1 style={{ color: '#fff', fontWeight: 600 }}>Their life is cruel</Heading1>
-                    <Heading3 style={{ color: '#fff', fontWeight: 600 }}>But you can help.</Heading3>
-                    <ButtonRow>
-                        <Link href="/#what-is-this-site">
-                            <Button style={{ backgroundColor: theme.colors.white.light, color: theme.colors.black.dark }}>Learn how</Button>
-                        </Link>
-                        <Link href="/donate">
-                            <Button style={{ backgroundColor: theme.colors.primary.dark }}>Donate</Button>
-                        </Link>
-                    </ButtonRow>
-                </SidebarContents>
-            </Sidebar>
-        </Container >
+        <>
+            <Seo description="A one-stop place for charities and NGOs to have their organizations listed, and for you to easily see which causes need your help." keywords="donate to ngo, donate to charity, register ngo" title="Charity CMS" url={`${process.env.NEXT_PUBLIC_APP_ORIGIN}/`}/>
+            <Container>
+                <ChangingImages style={{ position: 'absolute', inset: 0, zIndex: 1 }} images={images} altPrefix="Landing page image" />
+                <Sidebar>
+                    <SidebarContents>
+                        <Heading1 style={{ color: '#fff', fontWeight: 600 }}>Their life is cruel</Heading1>
+                        <Heading3 style={{ color: '#fff', fontWeight: 600 }}>But you can help.</Heading3>
+                        <ButtonRow>
+                            <Link href="/#what-is-this-site">
+                                <Button style={{ backgroundColor: theme.colors.white.light, color: theme.colors.black.dark }}>Learn how</Button>
+                            </Link>
+                            <Link href="/donate">
+                                <Button style={{ backgroundColor: theme.colors.primary.dark }}>Donate</Button>
+                            </Link>
+                        </ButtonRow>
+                    </SidebarContents>
+                </Sidebar>
+            </Container>
+        </>
     )
 }
