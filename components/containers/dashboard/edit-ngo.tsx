@@ -35,7 +35,7 @@ interface Dashboard {
     ngoCategories: CategoryList
 }
 
-export default function Dashboard({ ngoCategories }: Dashboard) {
+export default function EditNgo({ ngoCategories }: Dashboard) {
     const { loading, ngoRegistered, ngoStatus } = useRegisteredNgo()
     const [verificationPdfFile, onVerificationPdfFileInput, verificationPdfFileStat] = useInputFile(MAX_FILE_SIZE, verificationDocFileTypes) // State to hold verification doc
     const [imageFile, onImageFileInput, imageFileStat] = useInputFile(MAX_FILE_SIZE, imageFileTypes)

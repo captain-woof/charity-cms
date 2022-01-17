@@ -38,11 +38,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
 }
 
 // Page component
-interface DashboardPage {
+interface EditNgoPage {
     ngoCategories: CategoryList
 }
 
-export default function DashboardPage({ ngoCategories }: DashboardPage) {
+export default function EditNgoPage({ ngoCategories }: EditNgoPage) {
     return (
         <EditNgo ngoCategories={ngoCategories} />
     )
