@@ -66,7 +66,7 @@ export default function NgosWithUs({ orgsData }: NgosWithUs) {
                     <Link key={index} href={`/ngo/${orgData.ngoSlug}`} passHref>
                         <NgoWrapper target='__blank'>
                             <NgoLogoWrapper>
-                                <Image src={orgData.image?.src} alt={`${orgData?.title} logo`} layout='fill' />
+                                <Image src={orgData.image?.src} alt={`${orgData?.title} logo`} layout='fill' objectFit="cover" />
                             </NgoLogoWrapper>
                             <NgoName>{orgData?.title}</NgoName>
                         </NgoWrapper>
