@@ -38,18 +38,18 @@ export const getAllNgo = async ({
     userEmail,
     ngoSlug,
     isVerified,
-    titleSearch
+    titleSearch,
 }: GetAllNgos): Promise<Ngos> => {
     //query statement
     const query = {
         content_type: "ngo",
         include: 10,
-        select: "sys.createdAt,sys.id,fields.title,fields.ngoSlug,fields.description,fields.ownerName,fields.charityEmail,fields.image,fields.category,fields.verificationPdf,fields.yearOfEstablish,fields.contact,fields.isVerified"        
+        select: "sys.createdAt,sys.id,fields.title,fields.ngoSlug,fields.description,fields.ownerName,fields.charityEmail,fields.image,fields.category,fields.verificationPdf,fields.yearOfEstablish,fields.contact,fields.isVerified",
         // "fields.isVerified": false,
     };
 
     // If title search is passed
-    if (!!titleSearch){
+    if (!!titleSearch) {
         query["fields.title[match]"] = titleSearch;
     }
 
@@ -124,7 +124,7 @@ export const getAllNgo = async ({
                     category: category.fields.categoryName,
                     yearOfEstablish,
                     contact,
-                    isVerified
+                    isVerified,
                 };
             }),
         };
@@ -160,6 +160,7 @@ export const ngoCount = async (): Promise<NgoCount> => {
     const query = {
         content_type: "ngo",
         include: 10,
+        "fields.isVerified": true,
     };
     try {
         const ngoList = await client.getEntries(query);
