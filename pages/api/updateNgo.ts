@@ -88,6 +88,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
                     }
                     // console.log(updatedNgo);
                     let newNgo = await updateNgo(ngoId, updatedNgo);
+                    
                     res.status(200).json(newNgo);
                 }
             } else {
