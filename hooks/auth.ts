@@ -58,7 +58,9 @@ export const useUser = (): User => {
                         sameSite: 'strict'
                     })
                 } else {
-                    destroyCookie(null, 'token')
+                    destroyCookie({}, "token", {
+                        path: '/'
+                    })
                 }
             })()
         })
@@ -154,20 +156,21 @@ export const useSignUpWithEmailAndPassword = () => {
 // For signing out user
 export const useSignOut = () => {
     const { error, pending, setError, setPending, setSuccess, success } = useStatus()
-    const signOutUser = useCallback(() => {
-        (async () => {
-            setError(false)
-            setPending(true)
-            setSuccess(false)
-            try {
-                await signOut(auth)
-                setSuccess("Successfully signed out!")
-            } catch (e) {
-                setError(getMessageFromException(e))
-            } finally {
-                setPending(false)
-            }
-        })()
+    const signOutUser = useCallback(async () => {
+        setError(false)
+        setPending(true)
+        setSuccess(false)
+        try {
+            await signOut(auth)
+            destroyCookie({}, "token", {
+                path: '/'
+            })
+            setSuccess("Successfully signed out!")
+        } catch (e) {
+            setError(getMessageFromException(e))
+        } finally {
+            setPending(false)
+        }
     }, [setError, setPending, setSuccess])
     // Return
     return { success, error, pending, signOut: signOutUser }
@@ -228,7 +231,7 @@ export const useUpdateUser = () => {
         if (!!user) {
             // Update user only if Email/Password was used for auth
             user.providerData.forEach((provider) => {
-                if(provider.providerId !== "password") return
+                if (provider.providerId !== "password") return
             })
 
             setError(false)

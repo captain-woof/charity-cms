@@ -33,8 +33,11 @@ export default function Logout() {
     const { signOut, success } = useSignOut()
 
     useEffect(() => {
-        signOut()
-    }, [signOut, router])
+        (async () => {
+            await signOut()
+        })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     useEffect(() => {
         if (success) {
