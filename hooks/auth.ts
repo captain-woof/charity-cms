@@ -230,9 +230,9 @@ export const useUpdateUser = () => {
     const updateUser = useCallback(async (type: 'email' | 'password' | 'profilePic' | 'name', newData: string) => {
         if (!!user) {
             // Update user only if Email/Password was used for auth
-            user.providerData.forEach((provider) => {
+            /*user.providerData.forEach((provider) => {
                 if (provider.providerId !== "password") return
-            })
+            })*/
 
             setError(false)
             setPending(true)
