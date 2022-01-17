@@ -98,7 +98,6 @@ export function DonateButton({ children, variant = 'primary', buttonProps, small
                         type: "number",
                         value: amount,
                         onChange: (e) => { setAmount(e.target.value) },
-                        step: 50,
                         onClick: (e) => { e.preventDefault(); }
                     }}/>
                 </form> :
