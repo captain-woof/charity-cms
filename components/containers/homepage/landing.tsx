@@ -64,9 +64,9 @@ const ButtonRow = styled.div`
 `
 
 const images = [
-    "/api/imageproxy?url=https://unsplash.it/1600/900",
-    "/api/imageproxy?url=https://unsplash.it/1280/720",
-    "/api/imageproxy?url=https://unsplash.it/1366/768",
+    "/images/make-a-change.jpg",
+    "/images/blood-donation.jpg",
+    "/images/child-welfare.jpg"
 ]
 
 export default function Landing() {

@@ -4,9 +4,9 @@ import { Heading2 } from "../../atoms/headings"
 import Paragraph from "../../atoms/paragraph"
 
 const images = [
-    "/api/imageproxy?url=https://unsplash.it/800/600",
-    "/api/imageproxy?url=https://unsplash.it/900/600",
-    "/api/imageproxy?url=https://unsplash.it/1200/900"
+    "/images/old-age-home.jpg",
+    "/images/flood.jpg",
+    "/images/poverty.jpg"
 ]
 
 export default function About() {
