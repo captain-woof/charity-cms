@@ -1,5 +1,5 @@
 import { Container } from "../../atoms/container";
-import { Heading1, Heading2 } from "../../atoms/headings";
+import { Heading2 } from "../../atoms/headings";
 import Row from "../../atoms/row";
 import styled, { css } from 'styled-components'
 import Image from 'next/image'
